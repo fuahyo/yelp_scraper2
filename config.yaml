@@ -2,10 +2,8 @@ version: 0.0.1
 seeder:
   file: ./seeder/seeder.rb
 parsers:
-  - file: ./parsers/seed.rb
+  - file: ./parsers/locations.rb
     page_type: seed
-  - file: ./parsers/city.rb
-    page_type: city
   - file: ./parsers/restaurant.rb
     page_type: restaurant
 exporters:
