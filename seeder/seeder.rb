@@ -2,7 +2,7 @@ seed_data = {
   'CL' => {
     sw_corner: {lat: -55.61183, long: -75.6443953112},
     ne_corner: {lat: -17.5800118954, long: -66.95992}
-  }
+  },
   'CZ' => {
     sw_corner: {lat: 48.5553052842, long: 12.2401111182},
     ne_corner: {lat: 51.1172677679, long: 18.8531441586}
