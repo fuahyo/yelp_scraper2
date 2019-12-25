@@ -31,7 +31,7 @@ unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
   json['searchPageProps']['searchResultsProps']['searchResults'].select{|a| !(a['searchResultBusiness'].nil?)}.each do |item|
     link = item['searchResultBusiness']['businessUrl']
     pages << {
-      url: link,
+      url: "https://www.yelp.com#{link}",
       page_type: 'restaurant',
       headers: {
         "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36",
