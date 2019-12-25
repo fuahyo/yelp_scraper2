@@ -3,7 +3,7 @@ seeder:
   file: ./seeder/seeder.rb
 parsers:
   - file: ./parsers/locations.rb
-    page_type: seed
+    page_type: locations
   - file: ./parsers/restaurant.rb
     page_type: restaurant
 exporters:
