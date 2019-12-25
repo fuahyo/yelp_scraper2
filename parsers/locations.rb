@@ -11,7 +11,7 @@ unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
   if page['vars']['initial']
     last_page = (json['searchPageProps']['headerProps']['pagerData']['total']/30.0).ceil rescue 1
     (2..last_page).each do |page_num|
-      link = url.gsub('start=0', "start=#{page_num*30-30}")
+      link = page['url'].gsub('start=0', "start=#{page_num*30-30}")
       pages << {
         url: link,
         page_type: 'locations',
