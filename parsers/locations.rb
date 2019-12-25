@@ -40,7 +40,7 @@ unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
       http2: true,
       vars: {
         country: page['vars']['country'],
-        position: (item.at('text()').text().to_i rescue 0)
+        position: (item['markerKey'] rescue 0)
       }
     }
   end
