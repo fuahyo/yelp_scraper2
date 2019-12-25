@@ -5,7 +5,7 @@ end
 
 html = Nokogiri::HTML(content)
 
-if html.at('div.no-results').blank?
+if html.at('div.no-results').nil?
 
   if page['vars']['country']
     last_page = html.at('div.page-of-pages').text.scan(/Page 1 of (\d+)/).first.first.to_i rescue 1
