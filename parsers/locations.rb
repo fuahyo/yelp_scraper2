@@ -28,7 +28,7 @@ unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
   end
   # page.search('li.domtags--li__373c0__3TKyB.list-item__373c0__M7vhU h3:has(a)').each do |item|
   # page.search('li.lemon--li__373c0__1r9wz.border-color--default__373c0__2oFDT h3:has(p)').each do |item|
-  json['searchPageProps']['searchResultsProps']['searchResults'].select{|a| a['searchResultBusiness'].present?}.each do |item|
+  json['searchPageProps']['searchResultsProps']['searchResults'].select{|a| !(a['searchResultBusiness'].nil?)}.each do |item|
     link = CGI.parse(item['searchResultBusiness']['businessUrl'])["redirect_url"][0]
     pages << {
       url: link,
