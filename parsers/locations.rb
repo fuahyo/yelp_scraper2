@@ -6,7 +6,7 @@ end
 # html = Nokogiri::HTML(content)
 json = JSON.parse(content) rescue nil
 
-unless json.nil?
+unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
 
   if page['vars']['initial']
     last_page = (json['searchPageProps']['headerProps']['pagerData']['total']/30.0).ceil rescue 1
