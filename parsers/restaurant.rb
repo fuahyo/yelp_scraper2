@@ -9,20 +9,20 @@ end
 html = Nokogiri::HTML(content)
 
 begin
-  if html.at('span.page-status:contains("404 error")').present?
+  unless html.at('span.page-status:contains("404 error")').nil?
     parsable = false
   end
-  if html.at('h1').blank?
+  if html.at('h1').nil?
     refetch page['gid']
     parsable = false
   end
-  if html.at('h1').text.strip == "See you later!"
-    redirect = CGI::parse(url)['redirect_url'].first
-    $mongo_pool["#{parser_page[:source_name]}_pages"].find(_id: parser_page[:_id]).update_one('$set' => {url: redirect})
-    refetch page['gid']
-    parsable = false
-  end
-  if html.at('meta[itemprop="addressCountry"]').blank?
+  # if html.at('h1').text.strip == "See you later!"
+  #   redirect = CGI::parse(page['url'])['redirect_url'].first
+  #   $mongo_pool["#{parser_page[:source_name]}_pages"].find(_id: parser_page[:_id]).update_one('$set' => {url: redirect})
+  #   refetch page['gid']
+  #   parsable = false
+  # end
+  if html.at('meta[itemprop="addressCountry"]').nil?
     refetch page['gid']
     parsable = false
   end
@@ -33,7 +33,7 @@ begin
 
   uid = html.at('meta[name="yelp-biz-id"]')['content'] rescue nil
 
-  if uid.blank?
+  if uid.nil?
     refetch page['gid']
     parsable = false
   end

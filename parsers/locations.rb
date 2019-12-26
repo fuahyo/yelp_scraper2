@@ -30,8 +30,12 @@ unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
   # page.search('li.lemon--li__373c0__1r9wz.border-color--default__373c0__2oFDT h3:has(p)').each do |item|
   json['searchPageProps']['searchResultsProps']['searchResults'].select{|a| !(a['searchResultBusiness'].nil?)}.each do |item|
     link = item['searchResultBusiness']['businessUrl']
+    link = "https://www.yelp.com#{link}"
+    if link =~ /redirect_url/
+      link = URI.decode(link.scan(/redirect_url=(http.+?)&/).first.first)
+    end
     pages << {
-      url: "https://www.yelp.com#{link}",
+      url: link,
       page_type: 'restaurant',
       headers: {
         "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36",
