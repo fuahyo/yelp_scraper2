@@ -88,6 +88,7 @@ def parse_page(page,html)
   end.delete_if{|a,b| b.blank?}
 
   location = {
+    _collection: "locations_#{page['vars']['country'].downcase}",
     _id: uid,
     date: Time.now.strftime('%Y%m%d %H:%M:%S'),
     lead_id: uid,
