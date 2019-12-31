@@ -39,6 +39,7 @@ begin
   end
 rescue => e
   puts e.message
+  raise
   parsable = false
 end
 
