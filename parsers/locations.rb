@@ -6,6 +6,11 @@ end
 # html = Nokogiri::HTML(content)
 json = JSON.parse(content) rescue nil
 
+if json.nil?
+  puts 'refetch page'
+  refetch page['gid']
+end
+
 unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
 
   if page['vars']['initial']
