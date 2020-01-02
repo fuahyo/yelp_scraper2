@@ -43,9 +43,7 @@ rescue => e
   parsable = false
 end
 
-outputs << parse_page(page,html) if parsable
-
-def parse_page(page,html)
+if parsable
   json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
 
   if json.present?
@@ -125,4 +123,5 @@ def parse_page(page,html)
       website: (html.at('span.biz-website a').text.strip rescue nil)
     }
   }
+  outputs << location
 end
