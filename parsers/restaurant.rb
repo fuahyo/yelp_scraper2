@@ -27,7 +27,7 @@ begin
     parsable = false
   end
 
-  if html.at('meta[itemprop="addressCountry"]')['content'] != @country_code
+  if html.at('meta[itemprop="addressCountry"]')['content'] != page['vars']['country']
     parsable = false
   end
 
