@@ -15,6 +15,7 @@ unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
       pages << {
         url: link,
         page_type: 'locations',
+        fetch_type: "browser",
         headers: {
           "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36",
           "Accept" => "*/*"
@@ -37,7 +38,7 @@ unless json['searchPageProps']['searchResultsProps']['searchResults'].nil?
     pages << {
       url: link,
       page_type: 'restaurant',
-      fetch_type: "fullbrowser",
+      fetch_type: "browser",
       headers: {
         "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36",
         "Accept" => "*/*"
