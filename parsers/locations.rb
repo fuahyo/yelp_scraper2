@@ -4,7 +4,9 @@ if page['failed_response_status_code']
 end
 
 # html = Nokogiri::HTML(content)
-json = JSON.parse(content) rescue nil
+# json = JSON.parse(content) rescue nil
+html = Nokogiri::HTML(content)
+json = JSON.parse(html.at('pre').text) rescue nil
 
 if json.nil?
   puts 'refetch page'
