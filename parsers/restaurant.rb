@@ -46,7 +46,7 @@ end
 if parsable
   json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
 
-  if json.present?
+  if !json.nil?
     name = json['name']
 
     street_1 = json['address']['streetAddress'].gsub(/\s+/, ' ')
