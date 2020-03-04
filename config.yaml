@@ -6,6 +6,8 @@ parsers:
     page_type: locations
   - file: ./parsers/restaurant.rb
     page_type: restaurant
+  - file: ./parsers/seed.rb
+    page_type: seed
 exporters:
   - exporter_name: locations_cl_csv
     exporter_type: csv
