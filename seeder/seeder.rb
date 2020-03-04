@@ -15,7 +15,7 @@ seed_data.each do |code, coords|
       pages << {
         url: "https://www.yelp.com/search/snippet?cflt=restaurants&l=g:#{long.to_f},#{lat.to_f},#{long.to_f-1},#{lat.to_f-1}&start=0",
         page_type: 'locations',
-        fetch_type: "browser",
+        # fetch_type: "browser",
         headers: {
           "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
           "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
