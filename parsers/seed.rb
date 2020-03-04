@@ -10,7 +10,7 @@ parsable = true
 html = Nokogiri::HTML(content)
 
 parsable = false if !!html.at('div.no-results')
-parsable = false if !!page.at('p.lemon--p__373c0__3Qnnj.text__373c0__2pB8f.text-color--normal__373c0__K_MKN:contains("Suggestions for improving the results")')
+parsable = false if !!html.at('p.lemon--p__373c0__3Qnnj.text__373c0__2pB8f.text-color--normal__373c0__K_MKN:contains("Suggestions for improving the results")')
 
 if json.nil?
   puts 'refetch page'
