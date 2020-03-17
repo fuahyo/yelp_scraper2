@@ -64,7 +64,7 @@ seed_data.each do |code, coords|
           "goto_options": {
             "waitUntil": "domcontentloaded"
           }
-        }
+        },
         vars: {
           country: code,
           initial: true

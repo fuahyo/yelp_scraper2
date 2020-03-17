@@ -32,7 +32,7 @@ if parsable
           "goto_options": {
             "waitUntil": "domcontentloaded"
           }
-        }
+        },
         vars: {
           country: page['vars']['country'],
         }
