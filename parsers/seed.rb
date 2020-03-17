@@ -27,6 +27,12 @@ if parsable
           "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
         },
         http2: true,
+        "driver": {
+          "code": "await sleep(5000);",
+          "goto_options": {
+            "waitUntil": "domcontentloaded"
+          }
+        }
         vars: {
           country: page['vars']['country'],
         }
