@@ -60,7 +60,7 @@ seed_data.each do |code, coords|
         },
         http2: true,
         "driver": {
-          "code": "await sleep(5000);",
+          "code": "await sleep(3000);",
           "goto_options": {
             "waitUntil": "domcontentloaded"
           }
