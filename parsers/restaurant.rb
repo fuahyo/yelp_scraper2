@@ -71,6 +71,10 @@ if parsable
 
   cuisines = html.search('span.category-str-list a').map{|cat| cat.text.strip.gsub(/\\u([a-f0-9]{4,5})/i){ [$1.hex].pack('U') }}.uniq rescue []
 
+  if cuisines == nil || cuisines.count == 0
+    cuisines = html.search('div:has(h1) ~ span a').map{|a| a.text}
+  end
+
   main_cuisine = ([main_cuisine] & cuisines).first
 
   hours = html.search('table.table.table-simple.hours-table tr:has(th)').inject({}) do |a,b|
@@ -118,7 +122,7 @@ if parsable
     main_cuisine: main_cuisine,
     cuisine_name: cuisines,
     opening_hours: hours,
-    restaurant_tags: [],
+    restaurant_tags: cuisines,
     restaurant_deivery_zones: [],
     free_field: {
       website: (html.at('span.biz-website a').text.strip rescue nil)
