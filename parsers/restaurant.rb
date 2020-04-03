@@ -91,6 +91,8 @@ if parsable
     a.merge({key => value})
   end.delete_if{|a,b| b.blank?}
 
+  delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil
+
   location = {
     _collection: "locations_#{page['vars']['country'].downcase}",
     _id: uid,
@@ -114,7 +116,7 @@ if parsable
     restaurant_lat: lat,
     restaurant_long: long,
     phone_number: phone,
-    restaurant_delivers: nil,
+    restaurant_delivers: delivery,
     # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
     restaurant_rating: rating,
     restaurant_position: page['vars']['position'],
