@@ -91,7 +91,7 @@ if parsable
     a.merge({key => value})
   end.delete_if{|a,b| b.blank?}
 
-  delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil
+  delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
 
   location = {
     _collection: "locations_#{page['vars']['country'].downcase}",
