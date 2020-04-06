@@ -33,10 +33,13 @@ seed_data = {
   }
 }
 
+puts 'START SEEDING'
 country_code = ENV['country_code'] rescue nil
+puts "COUNTRY CODE: #{country_code}"
 if !country_code.nil?
   seed_data = seed_data.slice(country_code)
 end
+puts "SEED DATA: #{seed_data.inspect}"
 
 seed_data.each do |code, coords|
   (coords[:sw_corner][:lat].floor..coords[:ne_corner][:lat].ceil).each do |lat|
