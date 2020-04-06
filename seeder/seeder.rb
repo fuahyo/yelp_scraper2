@@ -33,9 +33,9 @@ seed_data = {
   }
 }
 
-country_code = 'CZ' rescue nil
+country_code = ENV['country_code'] rescue nil
 if !country_code.nil?
-  seed_data = seed_data.slice(country_code)
+  seed_data = seed_data.select{|key, value| key == country_code }
 end
 
 seed_data.each do |code, coords|
