@@ -1,4 +1,6 @@
 version: 0.0.1
+input_vars:
+ - name: country_code
 seeder:
   file: ./seeder/seeder.rb
 parsers:
