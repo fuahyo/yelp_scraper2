@@ -411,3 +411,54 @@ exporters:
     exporter_type: json
     collection: locations_no
     write_mode: line
+  - exporter_name: locations_jp_csv
+    exporter_type: csv
+    collection: locations_jp
+    offset: 0
+    order: desc
+    fields:
+      - header: "date"
+        path: "date"
+      - header: "lead_id"
+        path: "lead_id"
+      - header: "url"
+        path: "url"
+      - header: "restaurant_name"
+        path: "restaurant_name"
+      - header: "restaurant_address"
+        path: "restaurant_address1"
+      - header: "restaurant_post_code"
+        path: "restaurant_post_code"
+      - header: "restaurant_area"
+        path: "restaurant_area"
+      - header: "restaurant_lat"
+        path: "restaurant_lat"
+      - header: "restaurant_long"
+        path: "restaurant_long"
+      - header: "restaurant_city"
+        path: "restaurant_city"
+      - header: "restaurant_country"
+        path: "restaurant_country"
+      - header: "restaurant_delivers"
+        path: "restaurant_delivers"
+      - header: "phone_number"
+        path: "phone_number"
+      - header: "restaurant_rating"
+        path: "restaurant_rating"
+      - header: "restaurant_position"
+        path: "restaurant_position"
+      - header: "number_of_ratings"
+        path: "number_of_ratings"
+      - header: "main_cuisine"
+        path: "main_cuisine"
+      - header: "free_field"
+        path: "free_field"
+  - exporter_name: locations_jp_json
+    exporter_type: json
+    collection: locations_jp
+    write_mode: pretty_array
+  - exporter_name: locations_jp_json_line
+    exporter_type: json
+    collection: locations_jp
+    write_mode: line
+
