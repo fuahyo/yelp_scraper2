@@ -1,6 +1,7 @@
 parsable = true
 
 def uuid_v3(uuid_namespace, name)
+  version = 3
 
   hash = Digest::MD5.new
   hash.update(uuid_namespace)
