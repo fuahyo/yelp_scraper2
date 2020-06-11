@@ -63,10 +63,10 @@ if parsable
   if !json.nil?
     name = json['name']
 
-    street_1 = json['address']['streetAddress'].gsub(/\s+/, ' ')
+    street_1 = json['address']['streetAddress'].gsub(/\s+/, ' ') rescue nil
     city = json['address']['addressLocality']
     state = json['address']['addressRegion']
-    zip = json['address']['postalCode'].gsub('〒', '')
+    zip = json['address']['postalCode'].gsub('〒', '') rescue nil
     country = json['address']['addressCountry']
     phone = json['telephone']
 
