@@ -1,5 +1,17 @@
-require "active_support/core_ext/digest/uuid"
 parsable = true
+
+def uuid_v3(uuid_namespace, name)
+
+  hash = Digest::MD5.new
+  hash.update(uuid_namespace)
+  hash.update(name)
+
+  ary = hash.digest.unpack("NnnnnN")
+  ary[2] = (ary[2] & 0x0FFF) | (version << 12)
+  ary[3] = (ary[3] & 0x3FFF) | 0x8000
+
+  "%08x-%04x-%04x-%04x-%04x%08x" % ary
+end
 
 if page['failed_response_status_code']
   puts 'refetch restaurant'
@@ -94,7 +106,7 @@ if parsable
 
   delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
 
-  uuid = Digest::UUID.uuid_v3("yelp_#{page['vars']['country'].downcase}", uid)
+  uuid = uuid_v3("yelp_#{page['vars']['country'].downcase}", uid)
 
   location = {
     _collection: "locations_#{page['vars']['country'].downcase}",
