@@ -1,3 +1,4 @@
+require "active_support/core_ext/digest/uuid"
 parsable = true
 
 if page['failed_response_status_code']
@@ -93,11 +94,13 @@ if parsable
 
   delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
 
+  uuid = Digest::UUID.uuid_v3("yelp_#{page['vars']['country'].downcase}", uid)
+
   location = {
     _collection: "locations_#{page['vars']['country'].downcase}",
-    _id: uid,
+    _id: uuid,
     date: Time.now.strftime('%Y%m%d %H:%M:%S'),
-    lead_id: uid,
+    lead_id: uuid,
     url: page['url'],
     restaurant_name: name,
 
