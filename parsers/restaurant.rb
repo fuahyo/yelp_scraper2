@@ -21,6 +21,7 @@ if page['failed_response_status_code']
 end
 
 html = Nokogiri::HTML(content)
+json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
 
 begin
   unless html.at('span.page-status:contains("404 error")').nil?
@@ -36,12 +37,12 @@ begin
   #   refetch page['gid']
   #   parsable = false
   # end
-  if html.at('meta[itemprop="addressCountry"]').nil?
+  if json['address'].nil?
     refetch page['gid']
     parsable = false
   end
 
-  if html.at('meta[itemprop="addressCountry"]')['content'] != page['vars']['country']
+  if json['address']["addressCountry"] != page['vars']['country']
     parsable = false
   end
 
@@ -58,7 +59,6 @@ rescue => e
 end
 
 if parsable
-  json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
 
   if !json.nil?
     name = json['name']
@@ -89,11 +89,13 @@ if parsable
     cuisines = html.search('div:has(h1) ~ span a').map{|a| a.text}
   end
 
-  main_cuisine = ([main_cuisine] & cuisines).first
+  main_cuisine = ([main_cuisine] + cuisines).compact.first
 
-  hours = html.search('table.table.table-simple.hours-table tr:has(th)').inject({}) do |a,b|
+  # hours = html.search('table.table.table-simple.hours-table tr:has(th)').inject({}) do |a,b|
+    # value = b.at('td').inner_html.split('<br>').map do |range|
+  hours = html.search('table.table--simple__373c0__3lyDA.hours-table__373c0__1S9Q_ tr:has(th)').inject({}) do |a,b|
     key = b.at('th').text[0..2]
-    value = b.at('td').inner_html.split('<br>').map do |range|
+    value = b.search('td ul li p').map(&:text).map do |range|
       if range =~ /24 hours/i
         '0000-0000'
       else
