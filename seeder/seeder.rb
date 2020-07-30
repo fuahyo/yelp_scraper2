@@ -43,8 +43,8 @@ if !country_code.nil?
 end
 
 seed_data.each do |code, coords|
-  (coords[:sw_corner][:lat].floor..coords[:ne_corner][:lat].ceil).each do |lat|
-    (coords[:sw_corner][:long].floor..coords[:ne_corner][:long].ceil).each do |long|
+  (coords[:sw_corner][:lat].floor..coords[:ne_corner][:lat].ceil).step(0.3).each do |lat|
+    (coords[:sw_corner][:long].floor..coords[:ne_corner][:long].ceil).step(0.3).each do |long|
       pages << {
         url: "https://www.yelp.com/search?start=0&cflt=restaurants&l=g:#{long.to_f},#{lat.to_f},#{long.to_f-1},#{lat.to_f-1}",
         page_type: 'seed',
