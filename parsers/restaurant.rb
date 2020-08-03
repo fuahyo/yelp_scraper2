@@ -105,7 +105,7 @@ if parsable
       end
     end rescue nil
     a.merge({key => value})
-  end.delete_if{|a,b| b.blank?}
+  end.delete_if{|a,b| b.empty? || b.nil?}
 
   delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
 
