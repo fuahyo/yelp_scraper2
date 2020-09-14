@@ -152,7 +152,7 @@ if parsable
 
   html.search('section:contains("People Also Viewed") a[href]').map{|a| a['href']}.each do |related|
     pages << {
-      url: "https://www.yelp.com#{related}"
+      url: "https://www.yelp.com#{related}",
       page_type: 'restaurant',
       fetch_type: "browser",
       headers: {
