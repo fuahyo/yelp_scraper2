@@ -94,7 +94,8 @@ if parsable
   # hours = html.search('table.table.table-simple.hours-table tr:has(th)').inject({}) do |a,b|
     # value = b.at('td').inner_html.split('<br>').map do |range|
   # hours = html.search('table.table--simple__373c0__3lyDA.hours-table__373c0__1S9Q_ tr:has(th)').inject({}) do |a,b|
-  hours = html.search('table.table--simple__09f24__3lyDA.hours-table__09f24__1S9Q_ tr:has(th)').inject({}) do |a,b|
+  # hours = html.search('table.table--simple__09f24__3lyDA.hours-table__09f24__1S9Q_ tr:has(th)').inject({}) do |a,b|
+  hours = html.search('table.table--simple__373c0__3lyDA.hours-table__373c0__3ZnaC tr:has(th)').inject({}) do |a,b|
     key = b.at('th').text[0..2]
     value = b.search('td ul li p').map(&:text).map do |range|
       if range =~ /24 hours/i
