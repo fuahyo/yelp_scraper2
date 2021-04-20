@@ -80,6 +80,11 @@ if parsable
     main_cuisine = json['servesCuisine']
   end
 
+  if rating.blank?
+    rating = html.at('div.photoHeader__373c0__YdvQE div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f
+    reviews_count = html.at('div.photoHeader__373c0__YdvQE span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i
+  end
+
   lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
   lat, long = html.at('section:contains("Location") img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil?
 
@@ -88,6 +93,7 @@ if parsable
   if cuisines == nil || cuisines.count == 0
     cuisines = html.search('div:has(h1) ~ span a').map{|a| a.text}
   end
+  cuisines.shift if cuisines.first == 'Unclaimed'
 
   main_cuisine = ([main_cuisine] + cuisines).compact.first
 
@@ -95,7 +101,7 @@ if parsable
     # value = b.at('td').inner_html.split('<br>').map do |range|
   # hours = html.search('table.table--simple__373c0__3lyDA.hours-table__373c0__1S9Q_ tr:has(th)').inject({}) do |a,b|
   # hours = html.search('table.table--simple__09f24__3lyDA.hours-table__09f24__1S9Q_ tr:has(th)').inject({}) do |a,b|
-  hours = html.search('table.table--simple__373c0__3lyDA.hours-table__373c0__3ZnaC tr:has(th)').inject({}) do |a,b|
+  hours = html.search('table.table--simple__373c0__3hEOO.hours-table__373c0__1S9Q_ tr:has(th)').inject({}) do |a,b|
     key = b.at('th').text[0..2]
     value = b.search('td ul li p').map(&:text).map do |range|
       if range =~ /24 hours/i
@@ -109,9 +115,12 @@ if parsable
     a.merge({key => value})
   end.delete_if{|a,b| b.nil? || b.empty?}
 
-  delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
+  # delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
 
   uuid = uuid_v3("yelp_#{page['vars']['country'].downcase}", uid)
+
+  tags = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
+  delivery = tags.include?('Offers Delivery')
 
   location = {
     _collection: "locations_#{page['vars']['country'].downcase}",
@@ -144,7 +153,7 @@ if parsable
     main_cuisine: main_cuisine,
     cuisine_name: cuisines,
     opening_hours: hours,
-    restaurant_tags: cuisines,
+    restaurant_tags: tags,
     restaurant_deivery_zones: [],
     free_field: {
       website: (html.at('span.biz-website a').text.strip rescue nil)
