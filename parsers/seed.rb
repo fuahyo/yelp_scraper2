@@ -46,7 +46,8 @@ if parsable
   # html.search('li.lemon--li__09f24__1r9wz a:has(img).lemon--a__09f24__IEZFH').each do |item|
   # html.search('li.border-color--default__09f24__R1nRO a:has(img).link__09f24__1kwXV').each do |item|
   # html.search('li.border-color--default__09f24__R1nRO a:has(img).link__09f24__1MGLa').each do |item|
-  html.search('li.border-color--default__09f24__R1nRO a:has(img).photo-box-link__09f24__28L0f').each do |item|
+  # html.search('li.border-color--default__09f24__R1nRO a:has(img).photo-box-link__09f24__28L0f').each do |item|
+  html.search('li.border-color--default__09f24__1eOdn a:has(img).css-5r1d0t').each do |item|
     uri = item['href']
     link = "https://www.yelp.com#{uri}"
     if link =~ /redirect_url/
