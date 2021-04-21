@@ -81,8 +81,8 @@ if parsable
   end
 
   if rating.nil?
-    rating = html.at('div.photoHeader__373c0__YdvQE div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f
-    reviews_count = html.at('div.photoHeader__373c0__YdvQE span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i
+    rating = html.at('div.photoHeader__373c0__YdvQE div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
+    reviews_count = html.at('div.photoHeader__373c0__YdvQE span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
   end
 
   lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
