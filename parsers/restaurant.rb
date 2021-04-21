@@ -80,7 +80,7 @@ if parsable
     main_cuisine = json['servesCuisine']
   end
 
-  if rating.blank?
+  if rating.nil? || rating.empty?
     rating = html.at('div.photoHeader__373c0__YdvQE div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f
     reviews_count = html.at('div.photoHeader__373c0__YdvQE span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i
   end
