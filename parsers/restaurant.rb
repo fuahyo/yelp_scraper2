@@ -29,6 +29,7 @@ unwanted_cuisines = [
   "Fitness & Instruction","Amateur Sports Teams","Department Stores","Books, Mags, Music & Video",
   "Sporting Goods","Claimed"
 ]
+not_cuisines = ["Restaurants","Cafes","Sushi Bars","Gastropubs","Barbeque","Tex-Mex","Educational Services","Arcades","Local Flavor","Dance Clubs","Steakhouses","Cocktail Bars","American (Traditional)","Candy Stores","Shopping","Newspapers & Magazines","Desserts","Skin Care","Buffets","Island Pub","Food Court","Pubs","Tapas/Small Plates","Health Markets","Barbers","Lingerie","Game Meat","Parks","Florists","Cinema","Convenience Stores","Thrift Stores","Chiropractors","Brasseries","Bistros","Shoe Stores","Photography Stores & Services","Dance Studios","Mini Golf","Beauty & Spas","Pilates","Pool Halls","Eyewear & Opticians","Gift Shops","Libraries","Antiques","Fashion","Professional Services","Beer Bar","Food Stands","Computers","Creperies","British","Food Delivery Services","Botanical Gardens","Open Sandwiches","Baby Gear & Furniture","Organic Stores","Recreation Centers","Hobby Shops","Knitting Supplies","Churches","Farmers Market","Fondue","Lighting Fixtures & Equipment","International","Jewelry","Banks & Credit Unions","Train Stations","Live/Raw Food","Pharmacy","Kitchen & Bath","Children's Clothing","Flea Markets","Hostels","Baguettes","Home Decor","Wine Bars","Themed Cafes","Electronics","Latin American","Shopping Centers","Adult","Health & Medical","Bikes","African","Hardware Stores","Internet Cafes","Zoos","Festivals","Specialty Food","Bridal","Gluten-Free","Bathing Area","Polish","Eyelash Service","Gas Stations","Flowers & Gifts","Chocolatiers & Shops","Hot Pot","Insurance","Sports Bars","Public Transportation","Beer Gardens","Horseback Riding","Discount Store","Cuban","Basque","Optometrists","Comic Books","Tobacco Shops","Food","Community Service/Non-Profit","Hotels & Travel","Preschools","Kids Activities","Hair Extensions","Playgrounds","Medical Centers","Signature Cuisine","Castles","Local Services","Kiosk","Pop-Up Restaurants","Lakes","Food Trucks","Historical Tours","Pan Asian","Coffee Roasteries","Guest Houses","Boot Camps","Russian","Financial Services","Appliances","Videos & Video Game Rental","Dive Bars","Music & DVDs","Couriers & Delivery Services","Marketing","Bowling","Australian","Child Care & Day Care","Halal","Tours","Beaches","Seafood Markets","Laser Hair Removal","Bed & Breakfast","Bagels","Bangladeshi","Physical Therapy","Swimwear","Party Supplies","Experiences","Skating Rinks","Home & Garden","Pancakes","Fruits & Veggies","Furniture Reupholstery","Musical Instruments & Teachers","Bike Rentals","Funeral Services & Cemeteries","Airport Shuttles","Lawn Bowling","Weight Loss Centers","Fitness/Exercise Equipment","Outlet Stores","Car Rental","Indoor Playcentre","Poke","Bubble Tea","Education","Irish Pub","Butcher","Party & Event Planning","Kurdish","Tanning","Chicken Shop","Cantonese","Dance Schools","Tennis","Public Markets","Rafting/Kayaking","Skate Parks","Gelato","Paintball","Vinyl Records","IT Services & Computer Repair"]
 
 if page['failed_response_status_code']
   puts 'refetch restaurant'
@@ -102,6 +103,7 @@ if parsable
     cuisines = html.search('div:has(h1) ~ span a').map{|a| a.text}
   end
   cuisines.shift if cuisines.first == 'Unclaimed'
+  cuisines = cuisines - not_cuisines rescue []
 
   main_cuisine = ([main_cuisine] + cuisines).compact.first
 
@@ -109,7 +111,9 @@ if parsable
 
     if rating.nil?
       rating = html.at('div.photoHeader__373c0__YdvQE div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
+      rating ||= html.at('div.arrange-unit__373c0__1piwO.arrange-unit-fill__373c0__17z0h div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
       reviews_count = html.at('div.photoHeader__373c0__YdvQE span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
+      reviews_count ||= html.at('div.arrange-unit__373c0__1piwO.arrange-unit-fill__373c0__17z0h span.css-1h1j0y3:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
     end
 
     lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
@@ -166,7 +170,7 @@ if parsable
       restaurant_delivers: delivery,
       # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
       restaurant_rating: rating,
-      restaurant_position: page['vars']['position'],
+      restaurant_position: nil,
       number_of_ratings: reviews_count,
       main_cuisine: main_cuisine,
       cuisine_name: cuisines,
