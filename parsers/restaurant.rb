@@ -107,8 +107,8 @@ if parsable
   main_cuisine = ([main_cuisine] + cuisines).compact.first
 
   unless unwanted_cuisines.include?(main_cuisine)
-    cuisines = cuisines - not_cuisines rescue []
-    main_cuisine = ([main_cuisine] + cuisines).compact.first
+    cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
+    main_cuisine = cuisines.first
 
     if rating.nil?
       rating = html.at('div.photoHeader__373c0__YdvQE div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
