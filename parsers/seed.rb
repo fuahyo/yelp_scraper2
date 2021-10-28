@@ -9,8 +9,9 @@ parsable = true
 # json = JSON.parse(content) rescue nil
 html = Nokogiri::HTML(content)
 
-parsable = false if !!html.at('div.no-results')
-parsable = false if !!html.at('p.lemon--p__373c0__3Qnnj.text__373c0__2pB8f.text-color--normal__373c0__K_MKN:contains("Suggestions for improving the results")')
+parsable = !html.at('div.no-results')
+parsable = !html.at('p.lemon--p__373c0__3Qnnj.text__373c0__2pB8f.text-color--normal__373c0__K_MKN:contains("Suggestions for improving the results")')
+parsable = !html.at('p.css-znumc2:contains("Suggestions for improving the results")')
 
 if parsable
 
@@ -48,7 +49,7 @@ if parsable
   # html.search('li.border-color--default__09f24__R1nRO a:has(img).link__09f24__1MGLa').each do |item|
   # html.search('li.border-color--default__09f24__R1nRO a:has(img).photo-box-link__09f24__28L0f').each do |item|
   # html.search('li.border-color--default__09f24__1eOdn a:has(img).css-5r1d0t').each do |item|
-  html.search('li.border-color--default__09f24__3Epto a:has(img).css-3n3jk7').each do |item|
+  html.search('li.border-color--default__09f24__3Epto a:has(img)').each do |item|
     uri = item['href']
     link = "https://www.yelp.com#{uri}"
     if link =~ /redirect_url/
