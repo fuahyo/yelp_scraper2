@@ -111,10 +111,10 @@ if parsable
     main_cuisine = cuisines.first
 
     if rating.nil?
-      rating = html.at('div.photoHeader__373c0__YdvQE div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
-      rating ||= html.at('div.arrange-unit__373c0__1piwO.arrange-unit-fill__373c0__17z0h div.i-stars__373c0__1T6rz')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
-      reviews_count = html.at('div.photoHeader__373c0__YdvQE span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
-      reviews_count ||= html.at('div.arrange-unit__373c0__1piwO.arrange-unit-fill__373c0__17z0h span.css-1h1j0y3:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
+      rating = html.at('div.photoHeader__373c0__1lZx8 div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
+      rating ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
+      reviews_count = html.at('div.photoHeader__373c0__1lZx8 span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
+      reviews_count ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj span.css-1h1j0y3:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
     end
 
     lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
@@ -159,7 +159,7 @@ if parsable
       # delivery_time: "#{store['etaRange']['min']} - #{store['etaRange']['max']} min",
       # total_number_of_ratings: store[''],
       # does_delivery_not: store[''],
-      # restaurant_address: (store['location']['address']['formattedAddress'].present? ? store['location']['address']['formattedAddress'] : ['address1', 'city', 'country'].map{ |f| store['location']['address'][f] }.compact.join(', ')),
+      restaurant_address: street_1,
       restaurant_address1: street_1,
       # restaurant_address2: street_2,
       restaurant_city: city,
