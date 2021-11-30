@@ -19,25 +19,25 @@ if parsable
     last_page = html.at('div[aria-label="Pagination navigation"] span:contains("of")').text.scan(/1 of (\d+)/).first.first.to_i rescue 1
     (2..last_page).each do |page_num|
       link = page['url'].gsub('start=0', "start=#{page_num*30-30}")
-      # pages << {
-      #   url: link,
-      #   page_type: 'seed',
-      #   fetch_type: "browser",
-      #   headers: {
-      #     "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
-      #     "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-      #   },
-      #   http2: true,
-      #   "driver": {
-      #     "code": "await sleep(3000);",
-      #     "goto_options": {
-      #       "waitUntil": "domcontentloaded"
-      #     }
-      #   },
-      #   vars: {
-      #     country: page['vars']['country'],
-      #   }
-      # }
+      pages << {
+        url: link,
+        page_type: 'seed',
+        fetch_type: "browser",
+        headers: {
+          "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
+          "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+        },
+        http2: true,
+        "driver": {
+          "code": "await sleep(3000);",
+          "goto_options": {
+            "waitUntil": "domcontentloaded"
+          }
+        },
+        vars: {
+          country: page['vars']['country'],
+        }
+      }
     end
   end
 
