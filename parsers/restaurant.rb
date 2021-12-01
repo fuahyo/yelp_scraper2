@@ -128,7 +128,14 @@ else
     main_cuisine = ([main_cuisine] + cuisines).compact.first
 
     unless unwanted_cuisines.include?(main_cuisine)
-      cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
+      cuisines = []
+      html.search('script[type="application/ld+json"]').each do |js|
+        cs_json = JSON.parse(js)
+        if cs_json.include? "itemListElement"
+          cuisines << cs_json['itemListElement'][1]['item']['name'].gsub("amp;", '')
+        end
+      end
+      # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
       main_cuisine = cuisines.first
 
       if rating.nil?
@@ -146,7 +153,21 @@ else
       # hours = html.search('table.table--simple__373c0__3lyDA.hours-table__373c0__1S9Q_ tr:has(th)').inject({}) do |a,b|
       # hours = html.search('table.table--simple__09f24__3lyDA.hours-table__09f24__1S9Q_ tr:has(th)').inject({}) do |a,b|
       # hours = html.search('table.table--simple__373c0__3hEOO.hours-table__373c0__1S9Q_ tr:has(th)').inject({}) do |a,b|
-      hours = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)').inject({}) do |a,b|
+      # hours = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)').inject({}) do |a,b|
+      #   key = b.at('th').text[0..2]
+      #   value = b.search('td ul li p').map(&:text).map do |range|
+      #     if range =~ /24 hours/i
+      #       '0000-0000'
+      #     else
+      #       range.split('-').map do |d|
+      #         time = Time.parse(Nokogiri::HTML(d.strip).text).strftime("%H%M")
+      #       end.join('-')
+      #     end
+      #   end rescue nil
+      #   a.merge({key => value})
+      # end.delete_if{|a,b| b.nil? || b.empty?}
+      hours_sel = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)')
+      hours = hours_sel.inject({}) do |a,b|
         key = b.at('th').text[0..2]
         value = b.search('td ul li p').map(&:text).map do |range|
           if range =~ /24 hours/i
@@ -159,6 +180,22 @@ else
         end rescue nil
         a.merge({key => value})
       end.delete_if{|a,b| b.nil? || b.empty?}
+
+      if hours_sel.empty?
+        hours = html.search('table.table--simple__09f24__vy16f.hours-table__09f24__KR8wh tr:has(th)').inject({}) do |a,b|
+          key = b.at('th').text[0..2]
+          value = b.search('td ul li p').map(&:text).map do |range|
+            if range =~ /24 hours/i
+              '0000-0000'
+            else
+              range.split('-').map do |d|
+                time = Time.parse(Nokogiri::HTML(d.strip).text).strftime("%H%M")
+              end.join('-')
+            end
+          end rescue nil
+          a.merge({key => value})
+        end.delete_if{|a,b| b.nil? || b.empty?}
+      end
 
       # delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
 
@@ -201,7 +238,8 @@ else
         restaurant_tags: tags,
         restaurant_deivery_zones: [],
         free_field: {
-          website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
+          # website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
+          website: (html.search('div:has(p:contains("Business website"))').last.text.match(/http:.*\.com/) rescue nil)
         }
       }
       outputs << location
