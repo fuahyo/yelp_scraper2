@@ -132,7 +132,7 @@ else
       html.search('script[type="application/ld+json"]').each do |js|
         cs_json = JSON.parse(js)
         if cs_json.include? "itemListElement"
-          cuisines << cs_json['itemListElement'][1]['item']['name'].gsub("amp;", '')
+          cuisines << cs_json['itemListElement'][1]['item']['name'].gsub("amp;", '') rescue nil
         end
       end
       # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
