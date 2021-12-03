@@ -1,4 +1,3 @@
-version: 0.0.1
 parse_failed_pages: true
 input_vars:
  - name: country_code
