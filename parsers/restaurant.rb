@@ -1,5 +1,5 @@
 parsable = true
-if true #page['status'] == 'refetch_failed'
+if page['status'] == 'refetch_failed'
   refetch_count = (page['vars']['refetch_count'].nil?)? 1 : page['vars']['refetch_count'] + 1
   if refetch_count < 2
     pages << {
