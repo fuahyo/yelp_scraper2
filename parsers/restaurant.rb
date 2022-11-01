@@ -1,25 +1,29 @@
 parsable = true
-if page['status'] == 'refetch_failed'
-  # refetch_count = (page['vars']['refetch_count'].nil?)? 1 : page['vars']['refetch_count'] + 1
-  # if refetch_count < 10
-  #   pages << {
-  #     url: page['url'],
-  #     page_type: 'restaurant',
-  #     # fetch_type: "browser",
+if true #page['status'] == 'refetch_failed'
+  refetch_count = (page['vars']['refetch_count'].nil?)? 1 : page['vars']['refetch_count'] + 1
+  if refetch_count < 2
+    pages << {
+      url: page['url'],
+      page_type: 'restaurant',
+      fetch_type: "browser",
   #     headers: {
-  #       "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
+  # "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
   #       "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
   #     },
-  #     http2: true,
-  #     vars: {
-  #       country: page['vars']['country'],
-  #       position: page['vars']['position'],
-  #       refetch_count: refetch_count
-  #     }
-  #   }
-  # else
-  #   raise 'refetch failed'
-  # end
+      driver: {
+        name: "refetch",
+        enable_images: true,
+      },
+      http2: true,
+      vars: {
+        country: page['vars']['country'],
+        position: page['vars']['position'],
+        refetch_count: refetch_count
+      }
+    }
+  else
+    raise 'refetch failed'
+  end
 else
   def uuid_v3(uuid_namespace, name)
     version = 3
