@@ -145,8 +145,11 @@ else
       if rating.nil?
         rating = html.at('div.photoHeader__373c0__1lZx8 div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
         rating ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
+        rating ||= Float(html.at('div[class*="photoHeader"] div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
+        
         reviews_count = html.at('div.photoHeader__373c0__1lZx8 span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
         reviews_count ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj span.css-1h1j0y3:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
+        reviews_count ||= Integer(html.at('div#reviews div[class*="rating-text"] p').text[/(\d+) review/i, 1]) rescue nil
       end
 
       lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
@@ -186,7 +189,7 @@ else
       end.delete_if{|a,b| b.nil? || b.empty?}
 
       if hours_sel.empty?
-        hours = html.search('table.table--simple__09f24__vy16f.hours-table__09f24__KR8wh tr:has(th)').inject({}) do |a,b|
+        hours = html.search('table[class*="hours-table"] tr:has(th)').inject({}) do |a,b|
           key = b.at('th').text[0..2]
           value = b.search('td ul li p').map(&:text).map do |range|
             if range =~ /24 hours/i
@@ -208,13 +211,20 @@ else
       tags = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
       delivery = tags.include?('Offers Delivery')
 
+      if !cuisine.nil? && !cuisines&.empty?
+        not_cuisines = ["Property Management","Elementary Schools","Ferries","Landscaping","Silent Disco","Thrift Stores","Heating & Air Conditioning/HVAC","Tree Services","Fashion","Dance Clubs","Real Estate Agents","Casinos","Fishing","Bars","Car Dealers","Hotels","Massage","Contractors","General Contractors","Landmarks & Historical Buildings","Recreation Centers","Employment Agencies","Self Storage","Advertising","Boat Repair","Skiing","Baby Gear & Furniture","Cafes","Photographers","Surfing","Social Clubs","Hobby Shops","Food Stands","Churches","Doctors","Venues & Event Spaces","Automotive","Campgrounds","Wok","Hostels","Trains","Taxis","Pharmacy","Home & Garden","Appliances & Repair","International Grocery","Real Estate","Painters","Bowling","Child Care & Day Care","Flooring","Web Design","Tires","Beer, Wine & Spirits","Graphic Design","Kids Activities","Transportation","Saunas","Creperies","Print Media","Books, Mags, Music & Video","Beach Bars","Video/Film Production","Educational Services","Architects","Wedding Planning","Horseback Riding","Beaches","Organic Stores","Electricians","Hiking","Building Supplies","Lawyers","Electronics Repair","Cooking Schools","Parks","Meditation Centers","Food Delivery Services","Medical Foot Care","Bathing Area","Lakes","Antiques","Smokehouse","Community Service/Non-Profit","Go Karts","Event Planning & Services","Public Relations","Flowers & Gifts","Attraction Farms","Skin Care","Arts & Crafts","Auto Parts & Supplies","Persian/Iranian","Laser Tag","Cultural Center","Home Cleaning","Dentists","Climbing","Interior Design","Museums","Farms","Animal Shelters","Barbeque","Scooter Tours","Shopping Centers","Sports Medicine","Island Pub","Gun/Rifle Ranges","Zoos","Lawn Bowling","Nutritionists","Head Shops","Solar Installation","Indoor Playcentre","Mortgage Brokers","Department Stores","Electronics","Guest Houses","Brasseries","Sporting Goods","Auto Repair","Sports Clubs","Game Meat","Pool Halls","Dog Walkers","Furniture Reupholstery","Polish","Jewelry","Tennis","Botanical Gardens","Musicians","Bike tours","Musical Instruments & Teachers","Glass Blowing","Carpeting","Chiropractors","Gastropubs","Gas Stations","Laundry Services","Wholesale Stores","Art Galleries","Plumbing","Street Vendors","Toy Stores","Roofing","Playgrounds","Kiosk","Car Rental","Watches","Amusement Parks","Podiatrists","Tours","Sewing & Alterations","Cosmetics & Beauty Supply","Luggage","Performing Arts","Specialty Schools","Tobacco Shops","Music Venues","Spiritual Shop","Mini Golf","Discount Store","Photography Stores & Services","Watch Repair","Party & Event Planning","Private Schools","Travel Services","Country Dance Halls","Swimming Pools","Adult Education","Restaurants"]
+
+        cuisines = cuisines.reject{|c| not_cuisines.include?(c)}
+        main_cuisine = cuisines.first
+      end
+
       location = {
         _collection: "locations_#{page['vars']['country'].downcase}",
         _id: uuid,
         date: Time.now.strftime('%Y%m%d %H:%M:%S'),
         lead_id: uuid,
         url: page['url'],
-        restaurant_name: name,
+        restaurant_name: name, 
 
         price_category: price_category,
         # average_rating: store[''],
@@ -228,22 +238,22 @@ else
         restaurant_area: state,
         restaurant_post_code: zip,
         restaurant_country: country,
-        restaurant_lat: lat,
-        restaurant_long: long,
-        phone_number: phone,
+        restaurant_lat: (Float(lat) rescue nil),
+        restaurant_long: (Float(long) rescue nil),
+        phone_number: (phone&.empty? ? nil : phone),
         restaurant_delivers: delivery,
         # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
         restaurant_rating: rating,
         restaurant_position: nil,
         number_of_ratings: reviews_count,
         main_cuisine: main_cuisine,
-        cuisine_name: cuisines,
-        opening_hours: hours,
-        restaurant_tags: tags,
-        restaurant_deivery_zones: [],
+        cuisine_name: cuisines&.uniq,
+        opening_hours: (hours&.empty? ? nil : hours),
+        restaurant_tags: (tags&.empty? ? nil : tags),
+        restaurant_deivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
         free_field: {
           # website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
-          website: (html.search('div:has(p:contains("Business website"))').last.text.match(/http:.*\.com/) rescue nil)
+          website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
         }
       }
       outputs << location
