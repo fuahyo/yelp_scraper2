@@ -147,11 +147,14 @@ else
         rating ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
         rating ||= Float(html.at('div[class*="photoHeader"] div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
         rating ||= Float(html.at('main#main-content:first-child div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
+        rating ||= Float(html.at('yelp-react-root > div > div[class*="arrange"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
+
         
         reviews_count = html.at('div.photoHeader__373c0__1lZx8 span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
         reviews_count ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj span.css-1h1j0y3:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
         reviews_count ||= Integer(html.at('div#reviews div[class*="rating-text"] p').text[/(\d+) review/i, 1]) rescue nil
         reviews_count ||= Integer(html.css('div[class*="photoHeader"] span').find{|t| t.text =~ /\d+ review/i}.text[/(\d+) review/, 1]) rescue nil
+        reviews_count ||= Integer(html.css('main#main-content:first-child span').find{|t| t.text =~ /\d+ review/i}.text[/(\d+) review/, 1]) rescue nil
       end
 
       lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
@@ -213,12 +216,15 @@ else
       tags = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
       delivery = tags.include?('Offers Delivery')
 
-      if !cuisine.nil? && !cuisines&.empty?
+      if !cuisines.nil? && !cuisines&.empty?
         not_cuisines = ["Home & Garden", "Arcades", "Dance Clubs", "Caterers", "Fuel Docks", "Stadiums & Arenas", "Pop-Up Restaurants", "Landmarks & Historical Buildings", "Fashion", "Parks", "Flowers & Gifts", "Convenience Stores", "Fishing", "Bars", "Grocery", "Mini Golf", "Pool Halls", "Vacation Rental Agents", "Coffee & Tea", "Eyewear & Opticians", "Food Delivery Services", "Baby Gear & Furniture", "Transportation", "Organic Stores", "Recreation Centers", "Sporting Goods", "Flea Markets", "Bike Repair/Maintenance", "Food Court", "Electronics", "Shopping Centers", "Adult", "Hostels", "Hair Salons", "Books, Mags, Music & Video", "Internet Cafes", "Day Spas", "Jazz & Blues", "Ethical Grocery", "Irish", "Bridal", "Bathing Area", "Golf", "Bistros", "Fitness & Instruction", "Horseback Riding", "Beaches", "Post Offices", "Optometrists", "Bike Rentals", "Antiques", "Community Service/Non-Profit", "Preschools", "Kids Activities", "Hospitals", "Train Stations", "Mountain Biking", "Counseling & Mental Health", "Tobacco Shops", "Nail Salons", "Boat Charters", "Castles", "Hobby Shops", "Lakes", "Tours", "Boating", "Knitting Supplies", "Rafting/Kayaking", "Guest Houses", "Swedish", "Skin Care", "Accountants", "Marketing", "Bowling", "Child Care & Day Care", "Karaoke", "Steakhouses", "Libraries", "Public Art", "Festivals", "Scandinavian", "Playgrounds", "Jewelry", "Souvenir Shops", "Interior Design", "Skating Rinks", "Aquariums", "Pet Services", "Physical Therapy", "Thrift Stores", "Discount Store", "Lawn Bowling", "Weight Loss Centers", "Fitness/Exercise Equipment", "Outlet Stores", "Car Rental", "Pet Stores", "Indoor Playcentre", "Soccer", "Couriers & Delivery Services", "Community Centers", "Distilleries", "Colleges & Universities", "Insurance", "Farmers Market", "Specialty Schools", "Public Markets", "Signature Cuisine", "Resorts", "Acupuncture", "Musical Instruments & Teachers", "Art Classes", "Comedy Clubs", "Pharmacy", "Lighting Fixtures & Equipment", "IT Services & Computer Repair", "Ice Cream & Frozen Yogurt", "Party Supplies", "Wholesale Stores", "Toy Stores", "Cosmetics & Beauty Supply", "Department Stores", "Kiosk", "Cards & Stationery", "Botanical Gardens", "Delicatessen", "Car Wash", "Traditional Chinese Medicine", "Watches", "Venues & Event Spaces", "Computers", "Amusement Parks", "Mobile Phones", "Tickets", "Hotels", "Medical Foot Care", "Food Trucks", "Zoos", "Experiences", "Sewing & Alterations", "Real Estate", "Music Venues", "Luggage", "Performing Arts", "Youth Club", "Party & Event Planning", "Butcher", "Sports Clubs", "Cultural Center", "Arts & Crafts", "Wedding Planning", "Museums", "Nutritionists", "Laser Tag", "Head Shops", "Gas Stations", "Photography Stores & Services", "Modern European", "Watch Repair", "Educational Services", "Cinema", "Ski Resorts", "Street Vendors", "Chinese", "Art Galleries", "International Grocery", "Electronics Repair", "Furniture Reupholstery", "Betting Centers", "Doctors", "Surfing", "Personal Shopping", "Swimming Pools", "Graphic Design", "Social Clubs", "Adult Education"]
+        not_cuisines.uniq!
 
-        cuisines = cuisines.reject{|c| not_cuisines.include?(c)}
+        cuisines = cuisines - not_cuisines
         main_cuisine = cuisines.first
       end
+
+      cuisines = nil if cuisines.empty?
 
       location = {
         _collection: "locations_#{page['vars']['country'].downcase}",
