@@ -229,7 +229,7 @@ else
       location = {
         _collection: "locations_#{page['vars']['country'].downcase}",
         _id: uuid,
-        date: Time.now.strftime('%Y%m%d %H:%M:%S'),
+        date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
         lead_id: uuid,
         url: page['url'],
         restaurant_name: CGI.unescapeHTML(name), 
