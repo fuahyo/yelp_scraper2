@@ -6,10 +6,6 @@ if false
       url: page['url'],
       page_type: 'restaurant',
       fetch_type: "browser",
-  #     headers: {
-  # "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
-  #       "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-  #     },
       driver: {
         name: "refetch",
         enable_images: true,
@@ -52,9 +48,68 @@ else
     "Day Spas","Venues & Event Spaces","Art Museums","Martial Arts","Building Supplies","Car Wash",
     "Wholesale Stores","Architectural Tours","Waxing","Furniture Repair","Mass Media",
     "Fitness & Instruction","Amateur Sports Teams","Department Stores","Books, Mags, Music & Video",
-    "Sporting Goods","Claimed"
+    "Sporting Goods","Claimed","Building Supplies", "Laundry Services", "Windows Installation"
   ]
-  not_cuisines = ["Hair Salons","Gyms","Printing Services","Hotels","Massage","Cards & Stationery","Yoga","Men's Clothing","Art Galleries","Bookstores","Nail Salons","Museums","Performing Arts","Furniture Stores","Sports Wear","Hair Stylists","Hair Removal","Lounges","Art Supplies","Cosmetics & Beauty Supply","Opera & Ballet","Estheticians","Women's Clothing","Music Venues","Men's Hair Salons","Office Equipment","Arts & Crafts","Stadiums & Arenas","Leather Goods","Interior Design","Landmarks & Historical Buildings","Social Clubs","Toy Stores","Trainers","Accessories","Mattresses","Swimming Pools","Sports Clubs","Tattoo","Used, Vintage & Consignment","Arts & Entertainment","Makeup Artists","Active Life","Golf","Bike Repair/Maintenance","Boxing","Airport Lounges","Fabric Stores","Cultural Center","Betting Centers","Swimming Lessons/Schools","Day Spas","Venues & Event Spaces","Art Museums","Martial Arts","Building Supplies","Car Wash","Wholesale Stores","Architectural Tours","Waxing","Furniture Repair","Mass Media","Fitness & Instruction","Amateur Sports Teams","Department Stores","Books, Mags, Music & Video","Sporting Goods","Claimed","Restaurants", "Music & DVDs","Food Stands", "Kiosk","Bistros","Beaches","Grocery","Vegan","Buffets","Bars","Local Flavor","Gluten-Free","Wine Bars","Medical Spas","Farmers Market","Sushi Bars","Recreation Centers","Pubs","Used Bookstore","Comfort Food","Parks","Dog Parks","Coffee Roasteries","Cinema","Tex-Mex", "Post Offices","Community Service/Non-Profit","Pan Asian","Tea Rooms","Shoe Repair","Tapas/Small Plates","Gay Bars","Public Transportation","Home Decor","Electronics","Asian Fusion","Public Services & Government","Cafeteria","Candy Stores","Lakes","Antiques","Skin Care","Chocolatiers & Shops","Festivals","Skate Parks","Shopping","Caterers","Delis","Street Vendors","Organic Stores","Local Services","Skating Rinks","Dance Clubs","Bowling","Dive Bars","Bed & Breakfast","Beer Bar","Jewelry","Karaoke","Souvenir Shops","Speakeasies","Hiking","Traditional Chinese Medicine","Education","Health & Medical","Flea Markets","Hobby Shops","Barbers","Outlet Stores","Boating","Framing","Youth Club","Ski Resorts","Chicken Shop","Amusement Parks","Creperies","Sports Bars","Hotel bar","Train Stations","Cheese Shops","Comedy Clubs","Luggage","Pets","Knitting Supplies","Boat Charters","Hotels & Travel","Mobile Phones","Canteen","Irish Pub","Jazz & Blues","Discount Store","Shoe Stores","Airports","Outdoor Gear","Nightlife","Professional Services","Fashion","Specialty Food","Mountain Biking","Scandinavian Design","Food Trucks","Playgrounds","Physical Therapy","Religious Organizations","Fruits & Veggies","Beer, Wine & Spirits","Cafes","Diners","Eyelash Service","Convenience Stores","Shopping Centers","Bike Rentals","Buddhist Temples","Western Style Japanese Food","International","Bartending Schools","Hot Pot","Herbs & Spices","Rest Stops","Botanical Gardens","Climbing","Historical Tours","Zoos","Castles","Tapas Bars","Local Fish Stores","Chiropractors","Gyudon","Bagels","Sake Bars","Kids Activities","Whiskey Bars","Hookah Bars","Gift Shops","Food","Food Court","Meat Shops","Halal","Turkish","Acupuncture","Themed Cafes","Indoor Playcentre","Nurseries & Gardening","Barbeque","Arcades","Libraries","Guest Houses","Adult","Guitar Stores","Massage Therapy","Bathing Area","Laser Hair Removal","Butcher","British","Mediterranean","Eyewear & Opticians","Laotian","Drugstores","Onigiri","Florists","Pancakes","Hungarian","Recycling Center","Cooking Classes","Tofu Shops","Appliances","Adult Entertainment","Pet Stores","Seafood Markets","Bikes","Police Departments","Security Services","Party Supplies","Computers","Watches","Specialty Schools","Thrift Stores","Wineries","Party & Event Planning","Aquariums","Tobacco Shops","Eyebrow Services","Pool & Billiards","Dance Wear","Basketball Courts","Observatories","Home & Garden","Live/Raw Food","Tours","Tennis","Beauty & Spas","Strip Clubs","Permanent Makeup","Pet Groomers","Pakistani","Pasta Shops","Metro Stations","Baby Gear & Furniture","Pharmacy","Hostels","Personal Shopping","Soccer","Video Game Stores","Child Care & Day Care","Duty-Free Shops","Resorts","Race Tracks","Counseling & Mental Health","Clothing Rental","Pet Sitting","Pet Services","Colleges & Universities","Imported Food","Champagne Bars","Travel Services","Videos & Video Game Rental","Photography Stores & Services","Departments of Motor Vehicles","Beer Gardens","Health Markets","Campgrounds","Food Delivery Services","Funeral Services & Cemeteries","Session Photography","Dagashi","Skate Shops","Gas Stations","Bento","Public Art","Horseback Riding","Lingerie","Perfume", "Coffee & Tea Supplies","Comic Books","Children's Clothing","Filipino","Magicians","Shared Office Spaces","Hospitals","Greek","Do-It-Yourself Food","Transportation","Hardware Stores","Bulgarian","Software Development","Pool Halls","Visitor Centers","Popcorn Shops","Educational Services","Steakhouses","American (Traditional)","Newspapers & Magazines","Desserts","Island Pub","Game Meat","Brasseries","Dance Studios","Mini Golf","Pilates","Open Sandwiches","Churches","Fondue","Lighting Fixtures & Equipment","Banks & Credit Unions","Kitchen & Bath","Baguettes","Latin American","African","Internet Cafes","Bridal","Polish","Flowers & Gifts","Insurance","Cuban","Basque","Optometrists","Preschools","Hair Extensions","Medical Centers","Signature Cuisine","Pop-Up Restaurants","Boot Camps","Russian","Financial Services","Couriers & Delivery Services","Marketing","Australian","Bangladeshi","Swimwear","Experiences","Furniture Reupholstery","Musical Instruments & Teachers","Airport Shuttles","Lawn Bowling","Weight Loss Centers","Fitness/Exercise Equipment","Car Rental","Poke","Bubble Tea","Kurdish","Tanning","Cantonese","Dance Schools","Public Markets","Rafting/Kayaking","Gelato","Paintball","Vinyl Records","IT Services & Computer Repair","Fast Food","Pensions","Bakeries","Brewpubs","Vacation Rentals","Beer Garden","Dinner Theater","Serbo Croatian","Pawn Shops","Accountants","Apartments","Mountain Huts","Shipping Centers","Home Health Care","Watch Repair","Piercing","Soup","Professional Sports Teams","Community Centers","Public Plazas","German","Falafel"]
+  not_cuisines = ["Hair Salons","Gyms","Printing Services","Hotels","Massage","Cards & Stationery",
+    "Yoga","Men's Clothing","Art Galleries","Bookstores","Nail Salons","Museums","Performing Arts",
+    "Furniture Stores","Sports Wear","Hair Stylists","Hair Removal","Lounges","Art Supplies",
+    "Cosmetics & Beauty Supply","Opera & Ballet","Estheticians","Women's Clothing","Music Venues",
+    "Men's Hair Salons","Office Equipment","Arts & Crafts","Stadiums & Arenas","Leather Goods",
+    "Interior Design","Landmarks & Historical Buildings","Social Clubs","Toy Stores","Trainers",
+    "Accessories","Mattresses","Swimming Pools","Sports Clubs","Tattoo","Used, Vintage & Consignment",
+    "Arts & Entertainment","Makeup Artists","Active Life","Golf","Bike Repair/Maintenance","Boxing",
+    "Airport Lounges","Fabric Stores","Cultural Center","Betting Centers","Swimming Lessons/Schools",
+    "Day Spas","Venues & Event Spaces","Art Museums","Martial Arts","Building Supplies","Car Wash",
+    "Wholesale Stores","Architectural Tours","Waxing","Furniture Repair","Mass Media","Fitness & Instruction",
+    "Amateur Sports Teams","Department Stores","Books, Mags, Music & Video","Sporting Goods","Claimed",
+    "Restaurants", "Music & DVDs","Food Stands", "Kiosk","Bistros","Beaches","Grocery","Vegan","Buffets",
+    "Bars","Local Flavor","Gluten-Free","Wine Bars","Medical Spas","Farmers Market","Sushi Bars","Recreation Centers",
+    "Pubs","Used Bookstore","Comfort Food","Parks","Dog Parks","Coffee Roasteries","Cinema","Tex-Mex", 
+    "Post Offices","Community Service/Non-Profit","Pan Asian","Tea Rooms","Shoe Repair","Tapas/Small Plates",
+    "Gay Bars","Public Transportation","Home Decor","Electronics","Asian Fusion","Public Services & Government",
+    "Cafeteria","Candy Stores","Lakes","Antiques","Skin Care","Chocolatiers & Shops","Festivals","Skate Parks",
+    "Shopping","Caterers","Delis","Street Vendors","Organic Stores","Local Services","Skating Rinks",
+    "Dance Clubs","Bowling","Dive Bars","Bed & Breakfast","Beer Bar","Jewelry","Karaoke",
+    "Souvenir Shops","Speakeasies","Hiking","Traditional Chinese Medicine","Education",
+    "Health & Medical","Flea Markets","Hobby Shops","Barbers","Outlet Stores","Boating",
+    "Framing","Youth Club","Ski Resorts","Chicken Shop","Amusement Parks","Creperies","Sports Bars","Hotel bar",
+    "Train Stations","Cheese Shops","Comedy Clubs","Luggage","Pets","Knitting Supplies","Boat Charters",
+    "Hotels & Travel","Mobile Phones","Canteen","Irish Pub","Jazz & Blues","Discount Store","Shoe Stores",
+    "Airports","Outdoor Gear","Nightlife","Professional Services","Fashion","Specialty Food","Mountain Biking",
+    "Scandinavian Design","Food Trucks","Playgrounds","Physical Therapy","Religious Organizations","Fruits & Veggies",
+    "Beer, Wine & Spirits","Cafes","Diners","Eyelash Service","Convenience Stores","Shopping Centers","Bike Rentals",
+    "Buddhist Temples","Western Style Japanese Food","International","Bartending Schools","Hot Pot","Herbs & Spices",
+    "Rest Stops","Botanical Gardens","Climbing","Historical Tours","Zoos","Castles","Tapas Bars","Local Fish Stores",
+    "Chiropractors","Gyudon","Bagels","Sake Bars","Kids Activities","Whiskey Bars","Hookah Bars","Gift Shops","Food",
+    "Food Court","Meat Shops","Halal","Turkish","Acupuncture","Themed Cafes","Indoor Playcentre","Nurseries & Gardening",
+    "Barbeque","Arcades","Libraries","Guest Houses","Adult","Guitar Stores","Massage Therapy","Bathing Area",
+    "Laser Hair Removal","Butcher","British","Mediterranean","Eyewear & Opticians","Laotian","Drugstores","Onigiri",
+    "Florists","Pancakes","Hungarian","Recycling Center","Cooking Classes","Tofu Shops","Appliances","Adult Entertainment",
+    "Pet Stores","Seafood Markets","Bikes","Police Departments","Security Services","Party Supplies","Computers",
+    "Watches","Specialty Schools","Thrift Stores","Wineries","Party & Event Planning","Aquariums","Tobacco Shops",
+    "Eyebrow Services","Pool & Billiards","Dance Wear","Basketball Courts","Observatories","Home & Garden",
+    "Live/Raw Food","Tours","Tennis","Beauty & Spas","Strip Clubs","Permanent Makeup","Pet Groomers","Pakistani",
+    "Pasta Shops","Metro Stations","Baby Gear & Furniture","Pharmacy","Hostels","Personal Shopping","Soccer",
+    "Video Game Stores","Child Care & Day Care","Duty-Free Shops","Resorts","Race Tracks","Counseling & Mental Health",
+    "Clothing Rental","Pet Sitting","Pet Services","Colleges & Universities","Imported Food","Champagne Bars",
+    "Travel Services","Videos & Video Game Rental","Photography Stores & Services","Departments of Motor Vehicles",
+    "Beer Gardens","Health Markets","Campgrounds","Food Delivery Services","Funeral Services & Cemeteries",
+    "Session Photography","Dagashi","Skate Shops","Gas Stations","Bento","Public Art","Horseback Riding","Lingerie",
+    "Perfume", "Coffee & Tea Supplies","Comic Books","Children's Clothing","Filipino","Magicians","Shared Office Spaces",
+    "Hospitals","Greek","Do-It-Yourself Food","Transportation","Hardware Stores","Bulgarian","Software Development",
+    "Pool Halls","Visitor Centers","Popcorn Shops","Educational Services","Steakhouses","American (Traditional)",
+    "Newspapers & Magazines","Desserts","Island Pub","Game Meat","Brasseries","Dance Studios","Mini Golf","Pilates",
+    "Open Sandwiches","Churches","Fondue","Lighting Fixtures & Equipment","Banks & Credit Unions","Kitchen & Bath",
+    "Baguettes","Latin American","African","Internet Cafes","Bridal","Polish","Flowers & Gifts","Insurance","Cuban",
+    "Basque","Optometrists","Preschools","Hair Extensions","Medical Centers","Signature Cuisine","Pop-Up Restaurants",
+    "Boot Camps","Russian","Financial Services","Couriers & Delivery Services","Marketing","Australian","Bangladeshi",
+    "Swimwear","Experiences","Furniture Reupholstery","Musical Instruments & Teachers","Airport Shuttles","Lawn Bowling",
+    "Weight Loss Centers","Fitness/Exercise Equipment","Car Rental","Poke","Bubble Tea","Kurdish","Tanning","Cantonese",
+    "Dance Schools","Public Markets","Rafting/Kayaking","Gelato","Paintball","Vinyl Records","IT Services & Computer Repair",
+    "Fast Food","Pensions","Bakeries","Brewpubs","Vacation Rentals","Beer Garden","Dinner Theater","Serbo Croatian",
+    "Pawn Shops","Accountants","Apartments","Mountain Huts","Shipping Centers","Home Health Care","Watch Repair",
+    "Piercing","Soup","Professional Sports Teams","Community Centers","Public Plazas","German","Falafel", "Building Supplies", "Laundry Services", "Windows Installation"
+  ]
 
   if page['failed_response_status_code']
     raise '503'
@@ -73,12 +128,6 @@ else
       refetch page['gid']
       parsable = false
     end
-    # if html.at('h1').text.strip == "See you later!"
-    #   redirect = CGI::parse(page['url'])['redirect_url'].first
-    #   $mongo_pool["#{parser_page[:source_name]}_pages"].find(_id: parser_page[:_id]).update_one('$set' => {url: redirect})
-    #   refetch page['gid']
-    #   parsable = false
-    # end
     if json['address'].nil?
       refetch page['gid']
       parsable = false
@@ -212,6 +261,7 @@ else
       # delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
 
       uuid = uuid_v3("yelp_#{page['vars']['country'].downcase}", uid)
+      id_dedup = "#{CGI.unescapeHTML(name)}_#{street_1}_#{city}"
 
       tags = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
       delivery = tags.include?('Offers Delivery')
@@ -228,30 +278,26 @@ else
 
       location = {
         _collection: "locations_#{page['vars']['country'].downcase}",
-        _id: uuid,
+        _id: id_dedup,
         date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
         lead_id: uuid,
         url: page['url'],
         restaurant_name: CGI.unescapeHTML(name), 
 
         price_category: price_category,
-        # average_rating: store[''],
-        # delivery_time: "#{store['etaRange']['min']} - #{store['etaRange']['max']} min",
-        # total_number_of_ratings: store[''],
-        # does_delivery_not: store[''],
-        restaurant_address: street_1,
-        restaurant_address1: street_1,
+        restaurant_address: street_1.empty? ? nil : street_1,
+        # restaurant_address1: street_1,
         # restaurant_address2: street_2,
-        restaurant_city: city,
-        restaurant_area: state,
-        restaurant_post_code: zip,
+        restaurant_city: city.empty? ? nil : city,
+        restaurant_area: state.empty? ? nil : state,
+        restaurant_post_code: zip.empty? ? nil : zip,
         restaurant_country: country,
         restaurant_lat: (Float(lat) rescue nil),
         restaurant_long: (Float(long) rescue nil),
         phone_number: (phone&.empty? ? nil : phone),
         restaurant_delivers: delivery,
         # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
-        restaurant_rating: (rating ? rating.to_s : nil),
+        restaurant_rating: (rating ? rating.to_f : nil),
         restaurant_position: nil,
         number_of_ratings: reviews_count,
         main_cuisine: main_cuisine,

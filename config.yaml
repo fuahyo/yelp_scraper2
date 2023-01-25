@@ -10,6 +10,9 @@ parsers:
     page_type: restaurant
   - file: ./parsers/seed.rb
     page_type: seed
+finisher:
+  file: ./finisher/finisher.rb
+  disabled: false
 exporters:
   - exporter_name: locations_cl_csv
     exporter_type: csv
