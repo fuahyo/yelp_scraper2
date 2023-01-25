@@ -289,7 +289,7 @@ else
         # restaurant_address1: street_1,
         # restaurant_address2: street_2,
         restaurant_city: city.empty? ? nil : city,
-        restaurant_area: state.empty? ? nil : state,
+        restaurant_area: state.nil? || state.empty? ? nil : state,
         restaurant_post_code: zip.empty? ? nil : zip,
         restaurant_country: country,
         restaurant_lat: (Float(lat) rescue nil),
