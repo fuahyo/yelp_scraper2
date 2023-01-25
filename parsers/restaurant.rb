@@ -304,7 +304,7 @@ else
         cuisine_name: cuisines&.uniq,
         opening_hours: (hours&.empty? ? nil : hours),
         restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
-        restaurant_deivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
+        restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
         free_field: {
           # website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
           website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
@@ -312,22 +312,22 @@ else
       }
       outputs << location
 
-      html.search('section:contains("People Also Viewed") a[href]').map{|a| a['href']}.each do |related|
-        pages << {
-          url: "https://www.yelp.com#{related}",
-          page_type: 'restaurant',
-          fetch_type: "browser",
-          headers: {
-            "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
-            "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-          },
-          http2: true,
-          vars: {
-            country: page['vars']['country'],
-            position: (0)
-          }
-        }
-      end
+      # html.search('section:contains("People Also Viewed") a[href]').map{|a| a['href']}.each do |related|
+      #   pages << {
+      #     url: "https://www.yelp.com#{related}",
+      #     page_type: 'restaurant',
+      #     fetch_type: "browser",
+      #     headers: {
+      #       "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
+      #       "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+      #     },
+      #     http2: true,
+      #     vars: {
+      #       country: page['vars']['country'],
+      #       position: (0)
+      #     }
+      #   }
+      # end
     end
   end
 end
