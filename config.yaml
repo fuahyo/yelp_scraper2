@@ -14,76 +14,76 @@ finisher:
   file: ./finisher/finisher.rb
   disabled: false
 exporters:
-  - export_filename: "<name>_A1Restaurants_<d:yyyyMMdd>"
-    collection: locations_cl
-    excluded_fields:
-      - _id
-      - _gid
-      - _collection
-      - _created_at
-      - _job_id
-      - id
-      - restaurant_address2
-      - restaurant_id
-      - cuisine_name 
-      - opening_hours 
-      - restaurant_tags 
-      - restaurant_delivery_zones
-      - free_field
-      - average_rating
-      - price_category
-      - promotional_text
-      - total_number_of_ratings
-      - delivery_time
-    export_extension: json.gz
-    exporter_name: locations_a1
-    exporter_type: json
-    limit: 
-    no_subfolder: true
-    no_tar: true
-    offset: 
-    start_on_job_done: false
-    write_mode: line
-  - export_filename: "<name>_A2Restaurants_<d:yyyyMMdd>"
-    collection: locations_cl
-    excluded_fields:
-      - _id
-      - _gid
-      - _collection
-      - _created_at
-      - _job_id
-      - id
-      - restaurant_id
-      - restaurant_name 
-      - restaurant_address 
-      - restaurant_address1
-      - restaurant_address2
-      - restaurant_post_code
-      - restaurant_area 
-      - restaurant_lat 
-      - restaurant_long 
-      - restaurant_city 
-      - restaurant_country
-      - restaurant_delivers 
-      - phone_number 
-      - restaurant_rating 
-      - restaurant_position 
-      - number_of_ratings 
-      - main_cuisine
-      - average_rating
-      - price_category
-      - promotional_text
-      - total_number_of_ratings
-      - delivery_time
-    export_extension: json.gz
-    exporter_name: locations_a2
-    exporter_type: json
-    limit: 
-    no_subfolder: true
-    no_tar: true
-    offset: 
-    start_on_job_done: false
-    write_mode: line
+  # - export_filename: "<name>_A1Restaurants_<d:yyyyMMdd>"
+  #   collection: locations_cl
+  #   excluded_fields:
+  #     - _id
+  #     - _gid
+  #     - _collection
+  #     - _created_at
+  #     - _job_id
+  #     - id
+  #     - restaurant_address2
+  #     - restaurant_id
+  #     - cuisine_name 
+  #     - opening_hours 
+  #     - restaurant_tags 
+  #     - restaurant_delivery_zones
+  #     - free_field
+  #     - average_rating
+  #     - price_category
+  #     - promotional_text
+  #     - total_number_of_ratings
+  #     - delivery_time
+  #   export_extension: json.gz
+  #   exporter_name: locations_a1
+  #   exporter_type: json
+  #   limit: 
+  #   no_subfolder: true
+  #   no_tar: true
+  #   offset: 
+  #   start_on_job_done: false
+  #   write_mode: line
+  # - export_filename: "<name>_A2Restaurants_<d:yyyyMMdd>"
+  #   collection: locations_cl
+  #   excluded_fields:
+  #     - _id
+  #     - _gid
+  #     - _collection
+  #     - _created_at
+  #     - _job_id
+  #     - id
+  #     - restaurant_id
+  #     - restaurant_name 
+  #     - restaurant_address 
+  #     - restaurant_address1
+  #     - restaurant_address2
+  #     - restaurant_post_code
+  #     - restaurant_area 
+  #     - restaurant_lat 
+  #     - restaurant_long 
+  #     - restaurant_city 
+  #     - restaurant_country
+  #     - restaurant_delivers 
+  #     - phone_number 
+  #     - restaurant_rating 
+  #     - restaurant_position 
+  #     - number_of_ratings 
+  #     - main_cuisine
+  #     - average_rating
+  #     - price_category
+  #     - promotional_text
+  #     - total_number_of_ratings
+  #     - delivery_time
+  #   export_extension: json.gz
+  #   exporter_name: locations_a2
+  #   exporter_type: json
+  #   limit: 
+  #   no_subfolder: true
+  #   no_tar: true
+  #   offset: 
+  #   start_on_job_done: false
+  #   write_mode: line
   - export_filename: "<name>_A1Restaurants_<d:yyyyMMdd>"
     collection: locations_fi
     excluded_fields:
