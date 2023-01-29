@@ -209,24 +209,6 @@ else
       lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
       lat, long = html.at('section:contains("Location") img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil?
 
-      # hours = html.search('table.table.table-simple.hours-table tr:has(th)').inject({}) do |a,b|
-        # value = b.at('td').inner_html.split('<br>').map do |range|
-      # hours = html.search('table.table--simple__373c0__3lyDA.hours-table__373c0__1S9Q_ tr:has(th)').inject({}) do |a,b|
-      # hours = html.search('table.table--simple__09f24__3lyDA.hours-table__09f24__1S9Q_ tr:has(th)').inject({}) do |a,b|
-      # hours = html.search('table.table--simple__373c0__3hEOO.hours-table__373c0__1S9Q_ tr:has(th)').inject({}) do |a,b|
-      # hours = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)').inject({}) do |a,b|
-      #   key = b.at('th').text[0..2]
-      #   value = b.search('td ul li p').map(&:text).map do |range|
-      #     if range =~ /24 hours/i
-      #       '0000-0000'
-      #     else
-      #       range.split('-').map do |d|
-      #         time = Time.parse(Nokogiri::HTML(d.strip).text).strftime("%H%M")
-      #       end.join('-')
-      #     end
-      #   end rescue nil
-      #   a.merge({key => value})
-      # end.delete_if{|a,b| b.nil? || b.empty?}
       hours_sel = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)')
       hours = hours_sel.inject({}) do |a,b|
         key = b.at('th').text[0..2]
@@ -279,7 +261,7 @@ else
       location = {
         # _collection: "locations_#{page['vars']['country'].downcase}",
         _collection: 'locations',
-        _id: id_dedup,
+        _id: uuid,
         date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
         lead_id: uuid,
         url: page['url'],
