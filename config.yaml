@@ -16,7 +16,7 @@ finisher:
   disabled: false
 exporters:
   - export_filename: "<name>_A1Restaurants_<d:yyyyMMdd>"
-    collection: locations_fi
+    collection: locations
     excluded_fields:
       - _id
       - _gid
@@ -46,7 +46,7 @@ exporters:
     start_on_job_done: false
     write_mode: line
   - export_filename: "<name>_A2Restaurants_<d:yyyyMMdd>"
-    collection: locations_fi
+    collection: locations
     excluded_fields:
       - _id
       - _gid
