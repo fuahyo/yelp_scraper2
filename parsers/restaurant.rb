@@ -1,15 +1,17 @@
 parsable = true
+
 if false
+
   refetch_count = (page['vars']['refetch_count'].nil?)? 1 : page['vars']['refetch_count'] + 1
   if refetch_count < 2
     pages << {
       url: page['url'],
       page_type: 'restaurant',
-      # fetch_type: "browser",
-      # driver: {
-      #   name: "refetch",
-      #   enable_images: true,
-      # },
+      fetch_type: "browser",
+      driver: {
+        name: "refetch",
+        enable_images: true,
+      },
       http2: true,
       vars: {
         country: page['vars']['country'],
@@ -21,6 +23,8 @@ if false
     raise 'refetch failed'
   end
 else
+  # require 'byebug'
+  # byebug
   def uuid_v3(uuid_namespace, name)
     version = 3
 
@@ -119,7 +123,7 @@ else
 
   html = Nokogiri::HTML(content)
   json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
-
+  # byebug
   begin
     unless html.at('span.page-status:contains("404 error")').nil?
       parsable = false
@@ -150,7 +154,6 @@ else
   end
 
   if parsable
-
     if !json.nil?
       name = json['name']
 
@@ -312,5 +315,25 @@ else
         }
       end
     end
+  else
+    pages << {
+      url: page['url'],
+      page_type: 'restaurant',
+      fetch_type: "browser",
+      headers: {
+        "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
+        "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+      },
+      driver: {
+        name: "",
+        enable_images: true,
+      },
+      http2: true,
+      vars: {
+        country: page['vars']['country'],
+        position: page['vars']['position'],
+        # refetch_count: refetch_count
+      }
+    }
   end
 end

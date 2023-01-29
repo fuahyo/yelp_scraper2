@@ -1,4 +1,4 @@
-parse_failed_pages: true
+parse_failed_pages: false
 input_vars:
  - name: country_code
 seeder:
