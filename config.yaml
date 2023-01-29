@@ -10,7 +10,7 @@ parsers:
     page_type: restaurant
   - file: ./parsers/seed.rb
     page_type: seed
-    disabled: true
+    # disabled: true
 finisher:
   file: ./finisher/finisher.rb
   disabled: false
