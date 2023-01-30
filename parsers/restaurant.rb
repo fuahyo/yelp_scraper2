@@ -137,9 +137,9 @@ else
   #     parsable = false
   #   end
 
-  #   if json['address']["addressCountry"] != page['vars']['country']
-  #     parsable = false
-  #   end
+    if json['address']["addressCountry"] != page['vars']['country']
+      parsable = false
+    end
 
   uid = html.at('meta[name="yelp-biz-id"]')['content'] rescue nil
 
