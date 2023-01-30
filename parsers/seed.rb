@@ -47,7 +47,7 @@ if parsable
   # html.search('li.border-color--default__09f24__R1nRO a:has(img).photo-box-link__09f24__28L0f').each do |item|
   # html.search('li.border-color--default__09f24__1eOdn a:has(img).css-5r1d0t').each do |item|
   # html.search('li.border-color--default__09f24__3Epto a:has(img)').each do |item|
-  html.search('li.border-color--default__09f24__NPAKY a:has(img)').each do |item|
+  html.search('li.border-color--default__09f24__NPAKY a:has(img)').each_with_index do |item, idx|
     uri = item['href']
     link = "https://www.yelp.com#{uri}"
     if link =~ /redirect_url/
@@ -68,7 +68,7 @@ if parsable
       http2: true,
       vars: {
         country: page['vars']['country'],
-        position: (item.at('text()').text().to_i rescue 0)
+        position: idx + 1
       }
     }
   end
