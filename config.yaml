@@ -17,11 +17,11 @@ finisher:
 exporters:
   - exporter_name: locations_json
     exporter_type: json
-    collection: locations_cl
+    collection: locations_cz
     write_mode: pretty_array
   - exporter_name: locations_json_line
     exporter_type: json
-    collection: locations_cl
+    collection: locations_cz
     write_mode: line
   - exporter_name: locations_cl_csv
     exporter_type: csv
