@@ -15,6 +15,14 @@ finisher:
   file: ./finisher/finisher.rb
   disabled: false
 exporters:
+  - exporter_name: locations_json
+    exporter_type: json
+    collection: locations_cl
+    write_mode: pretty_array
+  - exporter_name: locations_json_line
+    exporter_type: json
+    collection: locations_cl
+    write_mode: line
   - exporter_name: locations_cl_csv
     exporter_type: csv
     collection: locations
