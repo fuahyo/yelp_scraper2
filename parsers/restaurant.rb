@@ -263,7 +263,7 @@ else
 
       cuisines = nil if cuisines.empty?
       
-      if json['address']["addressCountry"] = page['vars']['country']
+      if json['address']["addressCountry"] == page['vars']['country']
         location = {
           # _collection: "locations_#{page['vars']['country'].downcase}",
           _collection: 'locations',
