@@ -9,7 +9,7 @@ while true
     '_id' => {'$gt' => last_id},
     '$orderby' => [{'_id' => 1}]
   }
-  records = find_outputs("locations_#{country_code.downcase}", query, 1, per_page)
+  records = find_outputs("locations", query, 1, per_page)
   # records2 = find_outputs("locations", query, 1, per_page)
 
   records.each do |location|
