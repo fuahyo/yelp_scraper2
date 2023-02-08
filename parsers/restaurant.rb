@@ -196,7 +196,7 @@ else
       # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
       
       main_cuisine = cuisines.first
-      if cuisines.empty? && main_cuisine = "Restaurants"
+      if cuisines.empty? && main_cuisine == "Restaurants"
         main_cuisine = "Restaurants"
       end
 
