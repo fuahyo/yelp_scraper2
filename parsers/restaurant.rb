@@ -38,7 +38,7 @@ else
 
     "%08x-%04x-%04x-%04x-%04x%08x" % ary
   end
-
+  
   unwanted_cuisines = [
     "Hair Salons","Gyms","Printing Services","Hotels","Massage","Cards & Stationery",
     "Yoga","Men's Clothing","Art Galleries","Bookstores","Nail Salons","Museums","Performing Arts",
@@ -66,7 +66,7 @@ else
     "Day Spas","Venues & Event Spaces","Art Museums","Martial Arts","Building Supplies","Car Wash",
     "Wholesale Stores","Architectural Tours","Waxing","Furniture Repair","Mass Media","Fitness & Instruction",
     "Amateur Sports Teams","Department Stores","Books, Mags, Music & Video","Sporting Goods","Claimed",
-    "Restaurants", "Music & DVDs","Food Stands", "Kiosk","Bistros","Beaches","Grocery","Vegan","Buffets",
+    "Music & DVDs","Food Stands", "Kiosk","Bistros","Beaches","Grocery","Vegan","Buffets",
     "Bars","Local Flavor","Gluten-Free","Wine Bars","Medical Spas","Farmers Market","Sushi Bars","Recreation Centers",
     "Pubs","Used Bookstore","Comfort Food","Parks","Dog Parks","Coffee Roasteries","Cinema","Tex-Mex", 
     "Post Offices","Community Service/Non-Profit","Pan Asian","Tea Rooms","Shoe Repair","Tapas/Small Plates",
@@ -194,7 +194,11 @@ else
         end
       end
       # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
+      
       main_cuisine = cuisines.first
+      if cuisines.empty? && main_cuisine = "Restaurants"
+        main_cuisine = "Restaurants"
+      end
 
       if rating.nil?
         rating = html.at('div.photoHeader__373c0__1lZx8 div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
