@@ -186,6 +186,7 @@ else
     main_cuisine = ([main_cuisine] + cuisines).compact.first
 
     unless unwanted_cuisines.include?(main_cuisine)
+      main_cuisine_origin = main_cuisine
       cuisines = []
       html.search('script[type="application/ld+json"]').each do |js|
         cs_json = JSON.parse(js)
@@ -196,7 +197,7 @@ else
       # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
       main_cuisine = cuisines.first
       if cuisines.empty?
-        main_cuisine = "Restaurants"
+        main_cuisine = main_cuisine_origin
       end
       
       if rating.nil?
