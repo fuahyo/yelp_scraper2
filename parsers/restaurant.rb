@@ -194,12 +194,11 @@ else
         end
       end
       # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
-      
       main_cuisine = cuisines.first
-      if cuisines.empty? && main_cuisine == "Restaurants"
+      if cuisines.empty?
         main_cuisine = "Restaurants"
       end
-
+      
       if rating.nil?
         rating = html.at('div.photoHeader__373c0__1lZx8 div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
         rating ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
