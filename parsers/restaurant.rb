@@ -271,7 +271,7 @@ else
         location = {
           # _collection: "locations_#{page['vars']['country'].downcase}",
           _collection: 'locations',
-          _id: uuid,
+          _id: id_dedup,
           date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
           lead_id: uuid,
           url: page['url'],
