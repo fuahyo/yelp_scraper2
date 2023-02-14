@@ -1,4 +1,4 @@
-country_code = ENV['country_code']
+# country_code = ENV['country_code']
 
 per_page = 500
 last_id = ''
@@ -19,6 +19,18 @@ while true
         cuisines["cuisine#{index + 1}"] = cuisine
     end rescue {}
     
+    unless location['main_cuisine'].nil?
+      if location['main_cuisine'].include?(',')
+        main_cuisine = location['main_cuisine'].split(',').first
+        location['main_cuisine'] = main_cuisine
+      end
+    end
+
+    if location['main_cuisine'] == "Restaurants"
+      cuisines["cuisine1"] = "Restaurant"
+    end
+
+    location['restaurant_post_code'] = nil if location['restaurant_post_code'].nil? || location['restaurant_post_code'].empty?
     location['cuisine_name'] = cuisines
     outputs << location
 
