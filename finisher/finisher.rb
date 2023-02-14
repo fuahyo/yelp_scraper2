@@ -14,7 +14,7 @@ while true
 
   records.each do |location|
     # location['free_field'] = {}
-    id_dedup = "#{CGI.unescapeHTML(location['restaurant_name'])}_#{location['restaurant_address']}_#{location['restaurant_city']}"
+    # id_dedup = "#{CGI.unescapeHTML(location['restaurant_name'])}_#{location['restaurant_address']}_#{location['restaurant_city']}"
     cuisines = {}
     location['cuisine_name'].each_with_index do |cuisine, index|
         cuisines["cuisine#{index + 1}"] = cuisine
@@ -33,7 +33,7 @@ while true
 
     location['restaurant_post_code'] = nil if location['restaurant_post_code'].nil? || location['restaurant_post_code'].empty?
     location['cuisine_name'] = cuisines
-    location['_id'] = id_dedup
+    # location['_id'] = id_dedup
     outputs << location
 
     save_outputs(outputs) if outputs.count > 99
