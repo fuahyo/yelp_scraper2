@@ -157,8 +157,6 @@ else
 
   if parsable
     if !json.nil?
-      require 'byebug'
-      byebug
       name = json['name']
 
       street_1 = json['address']['streetAddress'].gsub(/\s+/, ' ') rescue nil
