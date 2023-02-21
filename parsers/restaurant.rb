@@ -1,27 +1,26 @@
 parsable = true
 
 if false
-
-  refetch_count = (page['vars']['refetch_count'].nil?)? 1 : page['vars']['refetch_count'] + 1
-  if refetch_count < 2
-    pages << {
-      url: page['url'],
-      page_type: 'restaurant',
-      fetch_type: "browser",
-      driver: {
-        name: "refetch",
-        enable_images: true,
-      },
-      http2: true,
-      vars: {
-        country: page['vars']['country'],
-        position: page['vars']['position'],
-        refetch_count: refetch_count
-      }
-    }
-  else
-    raise 'refetch failed'
-  end
+  # refetch_count = (page['vars']['refetch_count'].nil?)? 1 : page['vars']['refetch_count'] + 1
+  # if refetch_count < 2
+  #   pages << {
+  #     url: page['url'],
+  #     page_type: 'restaurant',
+  #     fetch_type: "browser",
+  #     driver: {
+  #       name: "refetch",
+  #       enable_images: true,
+  #     },
+  #     http2: true,
+  #     vars: {
+  #       country: page['vars']['country'],
+  #       position: page['vars']['position'],
+  #       refetch_count: refetch_count
+  #     }
+  #   }
+  # else
+  #   raise 'refetch failed'
+  # end
 else
   # require 'byebug'
   # byebug
@@ -137,11 +136,10 @@ else
   #     parsable = false
   #   end
 
-  # if json['address']["addressCountry"] != page['vars']['country']
-  #   parsable = false
-  # end
+  if json['address']["addressCountry"] != page['vars']['country']
+    parsable = false
+  end
   
-
   uid = html.at('meta[name="yelp-biz-id"]')['content'] rescue nil
 
   #   if uid.nil?
@@ -185,40 +183,55 @@ else
     main_cuisine = ([main_cuisine] + cuisines).compact.first
 
     # unless unwanted_cuisines.include?(main_cuisine)
-      main_cuisine_origin = main_cuisine
-      cuisines = []
-      html.search('script[type="application/ld+json"]').each do |js|
-        cs_json = JSON.parse(js)
-        if cs_json.include? "itemListElement"
-          cuisines << cs_json['itemListElement'][1]['item']['name'].gsub("amp;", '') rescue nil
-        end
+    main_cuisine_origin = main_cuisine
+    cuisines = []
+    html.search('script[type="application/ld+json"]').each do |js|
+      cs_json = JSON.parse(js)
+      if cs_json.include? "itemListElement"
+        cuisines << cs_json['itemListElement'][1]['item']['name'].gsub("amp;", '') rescue nil
       end
-      # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
-      main_cuisine = cuisines.first
-      if cuisines.empty?
-        main_cuisine = main_cuisine_origin
-      end
+    end
+    # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
+    main_cuisine = cuisines.first
+    if cuisines.empty?
+      main_cuisine = main_cuisine_origin
+    end
+    
+    if rating.nil?
+      rating = html.at('div.photoHeader__373c0__1lZx8 div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
+      rating ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
+      rating ||= Float(html.at('div[class*="photoHeader"] div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
+      rating ||= Float(html.at('main#main-content:first-child div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
+      rating ||= Float(html.at('yelp-react-root > div > div[class*="arrange"] div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
+
       
-      if rating.nil?
-        rating = html.at('div.photoHeader__373c0__1lZx8 div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
-        rating ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
-        rating ||= Float(html.at('div[class*="photoHeader"] div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
-        rating ||= Float(html.at('main#main-content:first-child div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
-        rating ||= Float(html.at('yelp-react-root > div > div[class*="arrange"] div[class*="five-stars"]')['aria-label'][/([\d\.]+) star/, 1]) rescue nil
+      reviews_count = html.at('div.photoHeader__373c0__1lZx8 span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
+      reviews_count ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj span.css-1h1j0y3:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
+      reviews_count ||= Integer(html.at('div#reviews div[class*="rating-text"] p').text[/(\d+) review/i, 1]) rescue nil
+      reviews_count ||= Integer(html.css('div[class*="photoHeader"] span').find{|t| t.text =~ /\d+ review/i}.text[/(\d+) review/, 1]) rescue nil
+      reviews_count ||= Integer(html.css('main#main-content:first-child span').find{|t| t.text =~ /\d+ review/i}.text[/(\d+) review/, 1]) rescue nil
+    end
 
-        
-        reviews_count = html.at('div.photoHeader__373c0__1lZx8 span.css-bq71j2:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
-        reviews_count ||= html.at('div.arrange-unit__373c0__3S8rT.arrange-unit-fill__373c0__24Gfj span.css-1h1j0y3:contains("review")').text[/(\d+) review/, 1].to_i rescue nil
-        reviews_count ||= Integer(html.at('div#reviews div[class*="rating-text"] p').text[/(\d+) review/i, 1]) rescue nil
-        reviews_count ||= Integer(html.css('div[class*="photoHeader"] span').find{|t| t.text =~ /\d+ review/i}.text[/(\d+) review/, 1]) rescue nil
-        reviews_count ||= Integer(html.css('main#main-content:first-child span').find{|t| t.text =~ /\d+ review/i}.text[/(\d+) review/, 1]) rescue nil
-      end
+    lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
+    lat, long = html.at('section:contains("Location") img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil?
 
-      lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
-      lat, long = html.at('section:contains("Location") img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil?
+    hours_sel = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)')
+    hours = hours_sel.inject({}) do |a,b|
+      key = b.at('th').text[0..2]
+      value = b.search('td ul li p').map(&:text).map do |range|
+        if range =~ /24 hours/i
+          '0000-0000'
+        else
+          range.split('-').map do |d|
+            time = Time.parse(Nokogiri::HTML(d.strip).text).strftime("%H%M")
+          end.join('-')
+        end
+      end rescue nil
+      a.merge({key => value})
+    end.delete_if{|a,b| b.nil? || b.empty?}
 
-      hours_sel = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)')
-      hours = hours_sel.inject({}) do |a,b|
+    if hours_sel.empty?
+      hours = html.search('table[class*="hours-table"] tr:has(th)').inject({}) do |a,b|
         key = b.at('th').text[0..2]
         value = b.search('td ul li p').map(&:text).map do |range|
           if range =~ /24 hours/i
@@ -231,96 +244,81 @@ else
         end rescue nil
         a.merge({key => value})
       end.delete_if{|a,b| b.nil? || b.empty?}
+    end
 
-      if hours_sel.empty?
-        hours = html.search('table[class*="hours-table"] tr:has(th)').inject({}) do |a,b|
-          key = b.at('th').text[0..2]
-          value = b.search('td ul li p').map(&:text).map do |range|
-            if range =~ /24 hours/i
-              '0000-0000'
-            else
-              range.split('-').map do |d|
-                time = Time.parse(Nokogiri::HTML(d.strip).text).strftime("%H%M")
-              end.join('-')
-            end
-          end rescue nil
-          a.merge({key => value})
-        end.delete_if{|a,b| b.nil? || b.empty?}
-      end
+    # delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
 
-      # delivery = html.at('div:has(span:contains("Offers Delivery"))').at('span:contains("Yes")') != nil rescue false
+    uuid = uuid_v3("yelp_#{page['vars']['country'].downcase}", uid)
+    id_dedup = "#{CGI.unescapeHTML(name)}_#{street_1}_#{city}"
 
-      uuid = uuid_v3("yelp_#{page['vars']['country'].downcase}", uid)
-      id_dedup = "#{CGI.unescapeHTML(name)}_#{street_1}_#{city}"
+    tags = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
+    delivery = tags.include?('Offers Delivery')
 
-      tags = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
-      delivery = tags.include?('Offers Delivery')
+    if !cuisines.nil? && !cuisines&.empty?
+      # not_cuisines = ["Home & Garden", "Arcades", "Dance Clubs", "Caterers", "Fuel Docks", "Stadiums & Arenas", "Pop-Up Restaurants", "Landmarks & Historical Buildings", "Fashion", "Parks", "Flowers & Gifts", "Convenience Stores", "Fishing", "Bars", "Grocery", "Mini Golf", "Pool Halls", "Vacation Rental Agents", "Eyewear & Opticians", "Food Delivery Services", "Baby Gear & Furniture", "Transportation", "Organic Stores", "Recreation Centers", "Sporting Goods", "Flea Markets", "Bike Repair/Maintenance", "Food Court", "Electronics", "Shopping Centers", "Adult", "Hostels", "Hair Salons", "Books, Mags, Music & Video", "Internet Cafes", "Day Spas", "Jazz & Blues", "Ethical Grocery", "Irish", "Bridal", "Bathing Area", "Golf", "Bistros", "Fitness & Instruction", "Horseback Riding", "Beaches", "Post Offices", "Optometrists", "Bike Rentals", "Antiques", "Community Service/Non-Profit", "Preschools", "Kids Activities", "Hospitals", "Train Stations", "Mountain Biking", "Counseling & Mental Health", "Tobacco Shops", "Nail Salons", "Boat Charters", "Castles", "Hobby Shops", "Lakes", "Tours", "Boating", "Knitting Supplies", "Rafting/Kayaking", "Guest Houses", "Skin Care", "Accountants", "Marketing", "Bowling", "Child Care & Day Care", "Karaoke", "Steakhouses", "Libraries", "Public Art", "Festivals", "Scandinavian", "Playgrounds", "Jewelry", "Souvenir Shops", "Interior Design", "Skating Rinks", "Aquariums", "Pet Services", "Physical Therapy", "Thrift Stores", "Discount Store", "Lawn Bowling", "Weight Loss Centers", "Fitness/Exercise Equipment", "Outlet Stores", "Car Rental", "Pet Stores", "Indoor Playcentre", "Soccer", "Couriers & Delivery Services", "Community Centers", "Distilleries", "Colleges & Universities", "Insurance", "Farmers Market", "Specialty Schools", "Public Markets", "Signature Cuisine", "Resorts", "Acupuncture", "Musical Instruments & Teachers", "Art Classes", "Comedy Clubs", "Pharmacy", "Lighting Fixtures & Equipment", "IT Services & Computer Repair", "Ice Cream & Frozen Yogurt", "Party Supplies", "Wholesale Stores", "Toy Stores", "Cosmetics & Beauty Supply", "Department Stores", "Kiosk", "Cards & Stationery", "Botanical Gardens", "Delicatessen", "Car Wash", "Traditional Chinese Medicine", "Watches", "Venues & Event Spaces", "Computers", "Amusement Parks", "Mobile Phones", "Tickets", "Hotels", "Medical Foot Care", "Food Trucks", "Zoos", "Experiences", "Sewing & Alterations", "Real Estate", "Music Venues", "Luggage", "Performing Arts", "Youth Club", "Party & Event Planning", "Butcher", "Sports Clubs", "Cultural Center", "Arts & Crafts", "Wedding Planning", "Museums", "Nutritionists", "Laser Tag", "Head Shops", "Gas Stations", "Photography Stores & Services", "Modern European", "Watch Repair", "Educational Services", "Cinema", "Ski Resorts", "Street Vendors", "Chinese", "Art Galleries", "International Grocery", "Electronics Repair", "Furniture Reupholstery", "Betting Centers", "Doctors", "Surfing", "Personal Shopping", "Swimming Pools", "Graphic Design", "Social Clubs", "Adult Education", "Contractors", "Electricians", "Plumbing", "Painters", "Roofing", "General Contractors", "Private Schools", "Campgrounds", "Cafes", "Vacation Rentals", "Saunas", "Travel Services", "Smokehouse", "Advertising", "Home Cleaning", "Car Dealers", "Web Design", "Spiritual Shop", "Heating & Air Conditioning/HVAC", "Farms", "Tires", "Churches", "Elementary Schools", "Employment Agencies", "Flooring", "Public Relations", "Photographers", "Island Pub", "Print Media", "Appliances & Repair", "Video/Film Production", "Architects", "Tree Services", "Food Stands", "Hiking", "Lawyers", "Skiing", "Tennis", "Massage", "Chiropractors", "Landscaping", "Go Karts", "Auto Parts & Supplies", "Casinos", "Dentists", "Climbing", "Animal Shelters", "Gun/Rifle Ranges", "Solar Installation", "Auto Repair", "Polish", "Musicians", "Carpeting"]
+      # not_cuisines.uniq!
 
-      if !cuisines.nil? && !cuisines&.empty?
-        # not_cuisines = ["Home & Garden", "Arcades", "Dance Clubs", "Caterers", "Fuel Docks", "Stadiums & Arenas", "Pop-Up Restaurants", "Landmarks & Historical Buildings", "Fashion", "Parks", "Flowers & Gifts", "Convenience Stores", "Fishing", "Bars", "Grocery", "Mini Golf", "Pool Halls", "Vacation Rental Agents", "Eyewear & Opticians", "Food Delivery Services", "Baby Gear & Furniture", "Transportation", "Organic Stores", "Recreation Centers", "Sporting Goods", "Flea Markets", "Bike Repair/Maintenance", "Food Court", "Electronics", "Shopping Centers", "Adult", "Hostels", "Hair Salons", "Books, Mags, Music & Video", "Internet Cafes", "Day Spas", "Jazz & Blues", "Ethical Grocery", "Irish", "Bridal", "Bathing Area", "Golf", "Bistros", "Fitness & Instruction", "Horseback Riding", "Beaches", "Post Offices", "Optometrists", "Bike Rentals", "Antiques", "Community Service/Non-Profit", "Preschools", "Kids Activities", "Hospitals", "Train Stations", "Mountain Biking", "Counseling & Mental Health", "Tobacco Shops", "Nail Salons", "Boat Charters", "Castles", "Hobby Shops", "Lakes", "Tours", "Boating", "Knitting Supplies", "Rafting/Kayaking", "Guest Houses", "Skin Care", "Accountants", "Marketing", "Bowling", "Child Care & Day Care", "Karaoke", "Steakhouses", "Libraries", "Public Art", "Festivals", "Scandinavian", "Playgrounds", "Jewelry", "Souvenir Shops", "Interior Design", "Skating Rinks", "Aquariums", "Pet Services", "Physical Therapy", "Thrift Stores", "Discount Store", "Lawn Bowling", "Weight Loss Centers", "Fitness/Exercise Equipment", "Outlet Stores", "Car Rental", "Pet Stores", "Indoor Playcentre", "Soccer", "Couriers & Delivery Services", "Community Centers", "Distilleries", "Colleges & Universities", "Insurance", "Farmers Market", "Specialty Schools", "Public Markets", "Signature Cuisine", "Resorts", "Acupuncture", "Musical Instruments & Teachers", "Art Classes", "Comedy Clubs", "Pharmacy", "Lighting Fixtures & Equipment", "IT Services & Computer Repair", "Ice Cream & Frozen Yogurt", "Party Supplies", "Wholesale Stores", "Toy Stores", "Cosmetics & Beauty Supply", "Department Stores", "Kiosk", "Cards & Stationery", "Botanical Gardens", "Delicatessen", "Car Wash", "Traditional Chinese Medicine", "Watches", "Venues & Event Spaces", "Computers", "Amusement Parks", "Mobile Phones", "Tickets", "Hotels", "Medical Foot Care", "Food Trucks", "Zoos", "Experiences", "Sewing & Alterations", "Real Estate", "Music Venues", "Luggage", "Performing Arts", "Youth Club", "Party & Event Planning", "Butcher", "Sports Clubs", "Cultural Center", "Arts & Crafts", "Wedding Planning", "Museums", "Nutritionists", "Laser Tag", "Head Shops", "Gas Stations", "Photography Stores & Services", "Modern European", "Watch Repair", "Educational Services", "Cinema", "Ski Resorts", "Street Vendors", "Chinese", "Art Galleries", "International Grocery", "Electronics Repair", "Furniture Reupholstery", "Betting Centers", "Doctors", "Surfing", "Personal Shopping", "Swimming Pools", "Graphic Design", "Social Clubs", "Adult Education", "Contractors", "Electricians", "Plumbing", "Painters", "Roofing", "General Contractors", "Private Schools", "Campgrounds", "Cafes", "Vacation Rentals", "Saunas", "Travel Services", "Smokehouse", "Advertising", "Home Cleaning", "Car Dealers", "Web Design", "Spiritual Shop", "Heating & Air Conditioning/HVAC", "Farms", "Tires", "Churches", "Elementary Schools", "Employment Agencies", "Flooring", "Public Relations", "Photographers", "Island Pub", "Print Media", "Appliances & Repair", "Video/Film Production", "Architects", "Tree Services", "Food Stands", "Hiking", "Lawyers", "Skiing", "Tennis", "Massage", "Chiropractors", "Landscaping", "Go Karts", "Auto Parts & Supplies", "Casinos", "Dentists", "Climbing", "Animal Shelters", "Gun/Rifle Ranges", "Solar Installation", "Auto Repair", "Polish", "Musicians", "Carpeting"]
-        # not_cuisines.uniq!
+      cuisines = cuisines
+      main_cuisine = cuisines.first
+    end
 
-        cuisines = cuisines
-        main_cuisine = cuisines.first
-      end
+    cuisines = nil if cuisines.empty?
+    
+    if json['address']["addressCountry"] == page['vars']['country']
+      location = {
+        # _collection: "locations_#{page['vars']['country'].downcase}",
+        _collection: 'locations',
+        _id: id_dedup,
+        date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
+        lead_id: uuid,
+        url: page['url'],
+        restaurant_name: CGI.unescapeHTML(name), 
 
-      cuisines = nil if cuisines.empty?
-      
-      if json['address']["addressCountry"] == page['vars']['country']
-        location = {
-          # _collection: "locations_#{page['vars']['country'].downcase}",
-          _collection: 'locations',
-          _id: id_dedup,
-          date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
-          lead_id: uuid,
-          url: page['url'],
-          restaurant_name: CGI.unescapeHTML(name), 
-
-          price_category: price_category,
-          restaurant_address: street_1.empty? ? nil : street_1,
-          # restaurant_address1: street_1,
-          # restaurant_address2: street_2,
-          restaurant_city: city.empty? ? nil : city,
-          restaurant_area: state.nil? || state.empty? ? nil : state,
-          restaurant_post_code: zip.nil? ? nil : zip,
-          restaurant_country: country,
-          restaurant_lat: (Float(lat) rescue nil),
-          restaurant_long: (Float(long) rescue nil),
-          phone_number: (phone&.empty? ? nil : phone),
-          restaurant_delivers: delivery,
-          # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
-          restaurant_rating: (rating ? rating.to_f : nil),
-          restaurant_position: nil,
-          number_of_ratings: reviews_count,
-          main_cuisine: main_cuisine,
-          cuisine_name: cuisines&.uniq,
-          opening_hours: (hours&.empty? ? nil : hours),
-          restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
-          restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
-          free_field: {
-            # website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
-            website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
-          }
+        price_category: price_category,
+        restaurant_address: street_1.empty? ? nil : street_1,
+        # restaurant_address1: street_1,
+        # restaurant_address2: street_2,
+        restaurant_city: city.empty? ? nil : city,
+        restaurant_area: state.nil? || state.empty? ? nil : state,
+        restaurant_post_code: zip.nil? ? nil : zip,
+        restaurant_country: country,
+        restaurant_lat: (Float(lat) rescue nil),
+        restaurant_long: (Float(long) rescue nil),
+        phone_number: (phone&.empty? ? nil : phone),
+        restaurant_delivers: delivery,
+        # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
+        restaurant_rating: (rating ? rating.to_f : nil),
+        restaurant_position: nil,
+        number_of_ratings: reviews_count,
+        main_cuisine: main_cuisine,
+        cuisine_name: cuisines&.uniq,
+        opening_hours: (hours&.empty? ? nil : hours),
+        restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
+        restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
+        free_field: {
+          # website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
+          website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
         }
-        outputs << location
-      end
+      }
+      outputs << location
+    end
 
-      html.search('section:contains("People Also Viewed") a[href]').map{|a| a['href']}.each do |related|
-        pages << {
-          url: "https://www.yelp.com#{related}",
-          page_type: 'restaurant',
-          fetch_type: "browser",
-          headers: {
-            "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
-            "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-          },
-          http2: true,
-          vars: {
-            country: page['vars']['country'],
-            position: (0)
-          }
+    html.search('section:contains("People Also Viewed") a[href]').map{|a| a['href']}.each do |related|
+      pages << {
+        url: "https://www.yelp.com#{related}",
+        page_type: 'restaurant',
+        # fetch_type: "browser",
+        headers: {
+          "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
+          "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+        },
+        http2: true,
+        vars: {
+          country: page['vars']['country'],
+          position: (0)
         }
-      end
+      }
+    end
     # end
   end
 end

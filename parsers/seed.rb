@@ -5,8 +5,6 @@ end
 
 parsable = true
 
-# html = Nokogiri::HTML(content)
-# json = JSON.parse(content) rescue nil
 html = Nokogiri::HTML(content)
 
 parsable = !html.at('div.no-results')
@@ -38,15 +36,6 @@ if parsable
     end
   end
 
-  # page.search('li.domtags--li__373c0__3TKyB.list-item__373c0__M7vhU h3:has(a)').each do |item|
-  # page.search('li.lemon--li__373c0__1r9wz.border-color--default__373c0__2oFDT h3:has(p)').each do |item|
-  # html.search('li.lemon--li__373c0__1r9wz a:has(img).lemon--a__373c0__IEZFH').each do |item|
-  # html.search('li.lemon--li__09f24__1r9wz a:has(img).lemon--a__09f24__IEZFH').each do |item|
-  # html.search('li.border-color--default__09f24__R1nRO a:has(img).link__09f24__1kwXV').each do |item|
-  # html.search('li.border-color--default__09f24__R1nRO a:has(img).link__09f24__1MGLa').each do |item|
-  # html.search('li.border-color--default__09f24__R1nRO a:has(img).photo-box-link__09f24__28L0f').each do |item|
-  # html.search('li.border-color--default__09f24__1eOdn a:has(img).css-5r1d0t').each do |item|
-  # html.search('li.border-color--default__09f24__3Epto a:has(img)').each do |item|
   html.search('li.border-color--default__09f24__NPAKY a:has(img)').each_with_index do |item, idx|
     uri = item['href']
     link = "https://www.yelp.com#{uri}"
@@ -56,15 +45,15 @@ if parsable
     pages << {
       url: link,
       page_type: 'restaurant',
-      fetch_type: "browser",
+      # fetch_type: "browser",
       headers: {
         "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
         "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
       },
-      driver: {
-        name: "",
-        enable_images: true,
-      },
+      # driver: {
+      #   name: "",
+      #   enable_images: true,
+      # },
       http2: true,
       vars: {
         country: page['vars']['country'],
