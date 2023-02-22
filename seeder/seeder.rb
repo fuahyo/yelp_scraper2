@@ -43,23 +43,23 @@ if !country_code.nil?
 end
 
 seed_data.each do |code, coords|
-  (coords[:sw_corner][:lat].floor..coords[:ne_corner][:lat].ceil).step(0.4).each do |lat|
-    (coords[:sw_corner][:long].floor..coords[:ne_corner][:long].ceil).step(0.4).each do |long|
+  (coords[:sw_corner][:lat].floor..coords[:ne_corner][:lat].ceil).step(0.3).each do |lat|
+    (coords[:sw_corner][:long].floor..coords[:ne_corner][:long].ceil).step(0.3).each do |long|
       pages << {
         url: "https://www.yelp.com/search?start=0&cflt=restaurants&l=g:#{long.to_f},#{lat.to_f},#{long.to_f-1},#{lat.to_f-1}",
         page_type: 'seed',
-        # fetch_type: "browser",
+        fetch_type: "browser",
         headers: {
           "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
           "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
         },
         http2: true,
-        # "driver": {
-        #   "code": "await sleep(3000);",
-        #   "goto_options": {
-        #     "waitUntil": "domcontentloaded"
-        #   }
-        # },
+        "driver": {
+          "code": "await sleep(3000); await page.setDefaultTimeout(60000);",
+          "goto_options": {
+            "waitUntil": "domcontentloaded"
+          }
+        },
         vars: {
           country: code,
           initial: true
