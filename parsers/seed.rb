@@ -56,7 +56,7 @@ if parsable
           "waitUntil": "domcontentloaded"
         }
       },
-      http2: true,
+      # http2: true,
       vars: {
         country: page['vars']['country'],
         position: idx + 1
