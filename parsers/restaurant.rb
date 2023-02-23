@@ -319,7 +319,10 @@ else
         # http2: true,
         driver: {
           "code" => code,
+          "enable_images": false,
+          "stealth": false,
           "goto_options": {
+            "timeout" : 0,
             "waitUntil": "domcontentloaded"
           }
         },
