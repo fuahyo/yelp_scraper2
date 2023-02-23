@@ -314,7 +314,7 @@ else
         },
         # http2: true,
         "driver": {
-          "code" => 'await sleep(3000); await page.waitForSelector("section:contains("People Also Viewed")", {visible: true});',
+          "code" => 'await sleep(3000); await page.waitForSelector("css-13merx8", {visible: true});',
           "goto_options": {
             "waitUntil": "domcontentloaded"
           }
