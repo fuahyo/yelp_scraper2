@@ -55,12 +55,12 @@ if parsable
       },
       driver: {
         "code" => code,
-          "enable_images": false,
-          "stealth": false,
-          "goto_options": {
-            "timeout" : 0,
-            "waitUntil": "domcontentloaded"
-          }
+        "enable_images": false,
+        "stealth": false,
+        "goto_options": {
+          "timeout": 0,
+          "waitUntil": "domcontentloaded"
+        }
       },
       # http2: true,
       vars: {

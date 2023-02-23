@@ -322,7 +322,7 @@ else
           "enable_images": false,
           "stealth": false,
           "goto_options": {
-            "timeout" : 0,
+            "timeout": 0,
             "waitUntil": "domcontentloaded"
           }
         },
