@@ -1,5 +1,6 @@
 code = "
   await sleep(3000); 
+  await page.setDefaultTimeout(60000);
   await page.waitForSelector('div.css-1rjq8gp');
 "
 parsable = true
