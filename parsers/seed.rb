@@ -7,30 +7,26 @@ code = "
 "
 parsable = true
 
-html = Nokogiri::HTML(content)
+raise 'todo'
 
-parsable = !html.at('div.no-results')
-parsable = !html.at('p.lemon--p__373c0__3Qnnj.text__373c0__2pB8f.text-color--normal__373c0__K_MKN:contains("Suggestions for improving the results")')
-parsable = !html.at('p.css-znumc2:contains("Suggestions for improving the results")')
+# html = Nokogiri::HTML(content)
+json = JSON.parse(content)
+
+# parsable = !html.at('div.no-results')
+# parsable = !html.at('p.lemon--p__373c0__3Qnnj.text__373c0__2pB8f.text-color--normal__373c0__K_MKN:contains("Suggestions for improving the results")')
+# parsable = !html.at('p.css-znumc2:contains("Suggestions for improving the results")')
 
 if parsable
 
-  if page['vars']['initial']
-    last_page = html.at('div[aria-label="Pagination navigation"] span:contains("of")').text.scan(/1 of (\d+)/).first.first.to_i rescue 1
-    (2..last_page).each do |page_num|
-      link = page['url'].gsub('start=0', "start=#{page_num*30-30}")
+  total_results = json['searchPageProps']['mainContentComponentsListProps'].find{|x| x['type'] == "pagination" }['props']['totalResults'] rescue 0
+
+  if total_results > 10 && page['vars']['initial']
+    # pagination
+    (10..total_results).step(10).each do |start|
+      link = page['url'].gsub('start=0', "start=#{start}")
       pages << {
         url: link,
         page_type: 'seed',
-        # fetch_type: "browser",
-        # http2: true,
-        # "driver": {
-        #   "code": "await sleep(3000);",
-        #   "goto_options": {
-        #     "waitUntil": "domcontentloaded"
-        #   },
-        #   enable_images: true,
-        # },
         vars: {
           country: page['vars']['country'],
         }
@@ -38,14 +34,24 @@ if parsable
     end
   end
 
-  html.search('li.border-color--default__09f24__NPAKY a:has(img)').each_with_index do |item, idx|
-    uri = item['href']
-    link = "https://www.yelp.com#{uri}"
-    if link =~ /redirect_url/
-      link = URI.decode(link.scan(/redirect_url=(http.+?)&/).first.first)
+  restaurants = json['searchPageProps']['mainContentComponentsListProps']&.filter{|x| !x['bizId'].nil?} rescue nil
+
+  restaurants&.each_with_index do |item, idx|
+
+    rest = item['searchResultBusiness']
+    url = 'https://www.yelp.com' + rest['businessUrl']
+    
+    if url =~ /redirect_url/
+      url = URI.decode(url.scan(/redirect_url=(http.+?)&/).first.first)
     end
+
+    url = URI.parse(url)
+    url.fragment = nil
+    url.query = nil
+    url = url.to_s
+
     pages << {
-      url: link,
+      url: url,
       page_type: 'restaurant',
       fetch_type: "standard",
       headers: {
@@ -59,5 +65,5 @@ if parsable
       }
     }
   end
-
+  
 end
