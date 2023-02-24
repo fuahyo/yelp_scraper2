@@ -71,7 +71,7 @@ seed_data.each do |code, coords|
           country: code,
           initial: true
         }
-      }
+      } save_pages(pages) if pages.count > 99
       
       # break
     end

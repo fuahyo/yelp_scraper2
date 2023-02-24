@@ -25,10 +25,6 @@ related_restaurants&.each do |rest|
           position: 0,
           parent_gid: page['gid'],
         }
-        save_pages(pages) if pages.count > 99
-    }
-
-
-
+    }save_pages(pages) if pages.count > 99
 end
 
