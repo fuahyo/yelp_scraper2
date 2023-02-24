@@ -138,9 +138,10 @@ else
   #     refetch page['gid']
   #     parsable = false
   #   end
-
-  if json['address']["addressCountry"] != page['vars']['country']
-    parsable = false
+  unless json['address']["addressCountry"].nil?
+    if json['address']["addressCountry"] != page['vars']['country']
+      parsable = false
+    end
   end
   
   uid = html.at('meta[name="yelp-biz-id"]')['content'] rescue nil
@@ -332,9 +333,8 @@ else
           "parent_gid" => page['gid'],
           # "location" => location
         }),
-      }save_pages(pages) if pages.count > 99
-      
-
+      } 
+      save_pages pages if pages.count > 99
     end
 
     # html.search('section:contains("People Also Viewed") a[href]').map{|a| a['href']}.each do |related|

@@ -66,7 +66,8 @@ if parsable
         country: page['vars']['country'],
         position: idx + 1
       }
-    } save_pages(pages) if pages.count > 99
+    }
+    save_pages(pages) if pages.count > 99
   end
 
 end
