@@ -67,6 +67,7 @@ if parsable
         position: idx + 1
       }
     }
+    save_pages(pages) if pages.count > 99
   end
 
 end

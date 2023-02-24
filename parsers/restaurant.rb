@@ -304,6 +304,7 @@ else
         }
       }
       outputs << location
+      save_outputs outputs if outputs.length > 99
 
       pages << {
         url: page['url'].gsub(/\/$/, '') + "/props",
@@ -332,6 +333,7 @@ else
           # "location" => location
         }),
       }
+      save_pages(pages) if pages.count > 99
 
     end
 
