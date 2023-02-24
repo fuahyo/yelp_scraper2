@@ -7,7 +7,7 @@ code = "
 "
 parsable = true
 
-raise 'todo'
+# 
 
 # html = Nokogiri::HTML(content)
 json = JSON.parse(content)
@@ -19,6 +19,8 @@ json = JSON.parse(content)
 if parsable
 
   total_results = json['searchPageProps']['mainContentComponentsListProps'].find{|x| x['type'] == "pagination" }['props']['totalResults'] rescue 0
+
+  raise 'todo' if total_results > 0
 
   if total_results > 10 && page['vars']['initial']
     # pagination
@@ -65,5 +67,5 @@ if parsable
       }
     }
   end
-  
+
 end
