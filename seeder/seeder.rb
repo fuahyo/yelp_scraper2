@@ -48,7 +48,7 @@ seed_data.each do |code, coords|
 
       referer = "https://www.yelp.com/search?start=0&cflt=restaurants&l=g:#{long.to_f},#{lat.to_f},#{long.to_f-1},#{lat.to_f-1}"
       pages << {
-        url: "https://www.yelp.com/search/snippet?cflt=restaurants&start=0&l=#{long.to_f},#{lat.to_f},#{long.to_f-1},#{lat.to_f-1}",
+        url: "https://www.yelp.com/search/snippet?cflt=restaurants&start=0&l=g:#{long.to_f},#{lat.to_f},#{long.to_f-1},#{lat.to_f-1}",
         page_type: 'seed',
         priority: 5,
         headers: {
