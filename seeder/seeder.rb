@@ -64,7 +64,7 @@ seed_data.each do |code, coords|
           'sec-fetch-dest': 'empty',
           'sec-fetch-mode': 'cors',
           'sec-fetch-site': 'same-origin',
-          'x-requested-with': 'XMLHttpRequest'
+          'x-requested-with': 'XMLHttpRequest',
           "User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.50",
         },
         http2: true,
