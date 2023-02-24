@@ -74,7 +74,7 @@ seed_data.each do |code, coords|
         }
       }
       
-      break
+      # break
     end
   end
 end
