@@ -6,8 +6,10 @@ seeder:
 parsers:
   - file: ./parsers/locations.rb
     page_type: locations
+    disabled: true
   - file: ./parsers/restaurant.rb
     page_type: restaurant
+    disabled: true
   - file: ./parsers/seed.rb
     page_type: seed
     # disabled: true
