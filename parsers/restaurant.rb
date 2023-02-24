@@ -332,8 +332,9 @@ else
           "parent_gid" => page['gid'],
           # "location" => location
         }),
+        save_pages pages if pages.count > 99
       }
-      save_pages(pages) if pages.count > 99
+      
 
     end
 
