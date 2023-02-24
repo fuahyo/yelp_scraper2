@@ -50,7 +50,6 @@ seed_data.each do |code, coords|
       pages << {
         url: "https://www.yelp.com/search/snippet?cflt=restaurants&start=0&l=g:#{long.to_f},#{lat.to_f},#{long.to_f-1},#{lat.to_f-1}",
         page_type: 'seed',
-        priority: 5,
         headers: {
           'accept': 'application/json',
           'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
