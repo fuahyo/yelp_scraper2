@@ -20,11 +20,12 @@ if parsable
 
   total_results = json['searchPageProps']['mainContentComponentsListProps'].find{|x| x['type'] == "pagination" }['props']['totalResults'] rescue 0
 
-  raise 'todo' if total_results > 0
+  # raise 'todo' if total_results > 0
 
   if total_results > 10 && page['vars']['initial']
     # pagination
     (10..total_results).step(10).each do |start|
+      next if start == total_results
       link = page['url'].gsub('start=0', "start=#{start}")
       pages << {
         url: link,
