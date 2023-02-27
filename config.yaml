@@ -13,6 +13,9 @@ parsers:
   - file: ./parsers/seed.rb
     page_type: seed
     # disabled: true
+  - file: ./parsers/props.rb
+    page_type: props
+    # disabled: true
 finisher:
   file: ./finisher/finisher.rb
   disabled: false
