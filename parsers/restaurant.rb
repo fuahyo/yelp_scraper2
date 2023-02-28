@@ -170,8 +170,6 @@ else
       rating = json['aggregateRating']['ratingValue'] rescue nil
       reviews_count = json['aggregateRating']['reviewCount'] rescue 0
 
-      cuisine = json['servesCuisine']
-
       price_category = json['priceRange']
 
       main_cuisine = json['servesCuisine']
@@ -179,27 +177,26 @@ else
 
     cuisines = html.search('span.category-str-list a').map{|cat| cat.text.strip.gsub(/\\u([a-f0-9]{4,5})/i){ [$1.hex].pack('U') }}.uniq rescue []
 
-    if cuisines == nil || cuisines.count == 0
+    if cuisines.nil? || cuisines.count == 0
       cuisines = html.search('div:has(h1) ~ span a').map{|a| a.text}
     end
     cuisines.shift if cuisines.first == 'Unclaimed'
+    
+    # main_cuisine = ([main_cuisine] + cuisines).compact.first
 
-    main_cuisine = ([main_cuisine] + cuisines).compact.first
-
-    # unless unwanted_cuisines.include?(main_cuisine)
-    main_cuisine_origin = main_cuisine
-    cuisines = []
-    html.search('script[type="application/ld+json"]').each do |js|
-      cs_json = JSON.parse(js)
-      if cs_json.include? "itemListElement"
-        cuisines << cs_json['itemListElement'][1]['item']['name'].gsub("amp;", '') rescue nil
-      end
-    end
+    # cuisines = []
+    # html.search('script[type="application/ld+json"]').each do |js|
+    #   cs_json = JSON.parse(js)
+    #   if cs_json.include? "itemListElement"
+    #     cuisines << cs_json['itemListElement'][1]['item']['name'].gsub("amp;", '') rescue nil
+    #   end
+    # end
+    
     # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
-    main_cuisine = cuisines.first
-    if cuisines.empty?
-      main_cuisine = main_cuisine_origin
-    end
+    
+    # if cuisines.empty?
+    #   main_cuisine = main_cuisine_origin
+    # end
     
     if rating.nil?
       rating = html.at('div.photoHeader__373c0__1lZx8 div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
@@ -258,104 +255,119 @@ else
     tags = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
     delivery = tags.include?('Offers Delivery')
 
-    if !cuisines.nil? && !cuisines&.empty?
-      # not_cuisines = ["Home & Garden", "Arcades", "Dance Clubs", "Caterers", "Fuel Docks", "Stadiums & Arenas", "Pop-Up Restaurants", "Landmarks & Historical Buildings", "Fashion", "Parks", "Flowers & Gifts", "Convenience Stores", "Fishing", "Bars", "Grocery", "Mini Golf", "Pool Halls", "Vacation Rental Agents", "Eyewear & Opticians", "Food Delivery Services", "Baby Gear & Furniture", "Transportation", "Organic Stores", "Recreation Centers", "Sporting Goods", "Flea Markets", "Bike Repair/Maintenance", "Food Court", "Electronics", "Shopping Centers", "Adult", "Hostels", "Hair Salons", "Books, Mags, Music & Video", "Internet Cafes", "Day Spas", "Jazz & Blues", "Ethical Grocery", "Irish", "Bridal", "Bathing Area", "Golf", "Bistros", "Fitness & Instruction", "Horseback Riding", "Beaches", "Post Offices", "Optometrists", "Bike Rentals", "Antiques", "Community Service/Non-Profit", "Preschools", "Kids Activities", "Hospitals", "Train Stations", "Mountain Biking", "Counseling & Mental Health", "Tobacco Shops", "Nail Salons", "Boat Charters", "Castles", "Hobby Shops", "Lakes", "Tours", "Boating", "Knitting Supplies", "Rafting/Kayaking", "Guest Houses", "Skin Care", "Accountants", "Marketing", "Bowling", "Child Care & Day Care", "Karaoke", "Steakhouses", "Libraries", "Public Art", "Festivals", "Scandinavian", "Playgrounds", "Jewelry", "Souvenir Shops", "Interior Design", "Skating Rinks", "Aquariums", "Pet Services", "Physical Therapy", "Thrift Stores", "Discount Store", "Lawn Bowling", "Weight Loss Centers", "Fitness/Exercise Equipment", "Outlet Stores", "Car Rental", "Pet Stores", "Indoor Playcentre", "Soccer", "Couriers & Delivery Services", "Community Centers", "Distilleries", "Colleges & Universities", "Insurance", "Farmers Market", "Specialty Schools", "Public Markets", "Signature Cuisine", "Resorts", "Acupuncture", "Musical Instruments & Teachers", "Art Classes", "Comedy Clubs", "Pharmacy", "Lighting Fixtures & Equipment", "IT Services & Computer Repair", "Ice Cream & Frozen Yogurt", "Party Supplies", "Wholesale Stores", "Toy Stores", "Cosmetics & Beauty Supply", "Department Stores", "Kiosk", "Cards & Stationery", "Botanical Gardens", "Delicatessen", "Car Wash", "Traditional Chinese Medicine", "Watches", "Venues & Event Spaces", "Computers", "Amusement Parks", "Mobile Phones", "Tickets", "Hotels", "Medical Foot Care", "Food Trucks", "Zoos", "Experiences", "Sewing & Alterations", "Real Estate", "Music Venues", "Luggage", "Performing Arts", "Youth Club", "Party & Event Planning", "Butcher", "Sports Clubs", "Cultural Center", "Arts & Crafts", "Wedding Planning", "Museums", "Nutritionists", "Laser Tag", "Head Shops", "Gas Stations", "Photography Stores & Services", "Modern European", "Watch Repair", "Educational Services", "Cinema", "Ski Resorts", "Street Vendors", "Chinese", "Art Galleries", "International Grocery", "Electronics Repair", "Furniture Reupholstery", "Betting Centers", "Doctors", "Surfing", "Personal Shopping", "Swimming Pools", "Graphic Design", "Social Clubs", "Adult Education", "Contractors", "Electricians", "Plumbing", "Painters", "Roofing", "General Contractors", "Private Schools", "Campgrounds", "Cafes", "Vacation Rentals", "Saunas", "Travel Services", "Smokehouse", "Advertising", "Home Cleaning", "Car Dealers", "Web Design", "Spiritual Shop", "Heating & Air Conditioning/HVAC", "Farms", "Tires", "Churches", "Elementary Schools", "Employment Agencies", "Flooring", "Public Relations", "Photographers", "Island Pub", "Print Media", "Appliances & Repair", "Video/Film Production", "Architects", "Tree Services", "Food Stands", "Hiking", "Lawyers", "Skiing", "Tennis", "Massage", "Chiropractors", "Landscaping", "Go Karts", "Auto Parts & Supplies", "Casinos", "Dentists", "Climbing", "Animal Shelters", "Gun/Rifle Ranges", "Solar Installation", "Auto Repair", "Polish", "Musicians", "Carpeting"]
-      # not_cuisines.uniq!
+    # if !cuisines.nil? && !cuisines&.empty?
+    #   # not_cuisines = ["Home & Garden", "Arcades", "Dance Clubs", "Caterers", "Fuel Docks", "Stadiums & Arenas", "Pop-Up Restaurants", "Landmarks & Historical Buildings", "Fashion", "Parks", "Flowers & Gifts", "Convenience Stores", "Fishing", "Bars", "Grocery", "Mini Golf", "Pool Halls", "Vacation Rental Agents", "Eyewear & Opticians", "Food Delivery Services", "Baby Gear & Furniture", "Transportation", "Organic Stores", "Recreation Centers", "Sporting Goods", "Flea Markets", "Bike Repair/Maintenance", "Food Court", "Electronics", "Shopping Centers", "Adult", "Hostels", "Hair Salons", "Books, Mags, Music & Video", "Internet Cafes", "Day Spas", "Jazz & Blues", "Ethical Grocery", "Irish", "Bridal", "Bathing Area", "Golf", "Bistros", "Fitness & Instruction", "Horseback Riding", "Beaches", "Post Offices", "Optometrists", "Bike Rentals", "Antiques", "Community Service/Non-Profit", "Preschools", "Kids Activities", "Hospitals", "Train Stations", "Mountain Biking", "Counseling & Mental Health", "Tobacco Shops", "Nail Salons", "Boat Charters", "Castles", "Hobby Shops", "Lakes", "Tours", "Boating", "Knitting Supplies", "Rafting/Kayaking", "Guest Houses", "Skin Care", "Accountants", "Marketing", "Bowling", "Child Care & Day Care", "Karaoke", "Steakhouses", "Libraries", "Public Art", "Festivals", "Scandinavian", "Playgrounds", "Jewelry", "Souvenir Shops", "Interior Design", "Skating Rinks", "Aquariums", "Pet Services", "Physical Therapy", "Thrift Stores", "Discount Store", "Lawn Bowling", "Weight Loss Centers", "Fitness/Exercise Equipment", "Outlet Stores", "Car Rental", "Pet Stores", "Indoor Playcentre", "Soccer", "Couriers & Delivery Services", "Community Centers", "Distilleries", "Colleges & Universities", "Insurance", "Farmers Market", "Specialty Schools", "Public Markets", "Signature Cuisine", "Resorts", "Acupuncture", "Musical Instruments & Teachers", "Art Classes", "Comedy Clubs", "Pharmacy", "Lighting Fixtures & Equipment", "IT Services & Computer Repair", "Ice Cream & Frozen Yogurt", "Party Supplies", "Wholesale Stores", "Toy Stores", "Cosmetics & Beauty Supply", "Department Stores", "Kiosk", "Cards & Stationery", "Botanical Gardens", "Delicatessen", "Car Wash", "Traditional Chinese Medicine", "Watches", "Venues & Event Spaces", "Computers", "Amusement Parks", "Mobile Phones", "Tickets", "Hotels", "Medical Foot Care", "Food Trucks", "Zoos", "Experiences", "Sewing & Alterations", "Real Estate", "Music Venues", "Luggage", "Performing Arts", "Youth Club", "Party & Event Planning", "Butcher", "Sports Clubs", "Cultural Center", "Arts & Crafts", "Wedding Planning", "Museums", "Nutritionists", "Laser Tag", "Head Shops", "Gas Stations", "Photography Stores & Services", "Modern European", "Watch Repair", "Educational Services", "Cinema", "Ski Resorts", "Street Vendors", "Chinese", "Art Galleries", "International Grocery", "Electronics Repair", "Furniture Reupholstery", "Betting Centers", "Doctors", "Surfing", "Personal Shopping", "Swimming Pools", "Graphic Design", "Social Clubs", "Adult Education", "Contractors", "Electricians", "Plumbing", "Painters", "Roofing", "General Contractors", "Private Schools", "Campgrounds", "Cafes", "Vacation Rentals", "Saunas", "Travel Services", "Smokehouse", "Advertising", "Home Cleaning", "Car Dealers", "Web Design", "Spiritual Shop", "Heating & Air Conditioning/HVAC", "Farms", "Tires", "Churches", "Elementary Schools", "Employment Agencies", "Flooring", "Public Relations", "Photographers", "Island Pub", "Print Media", "Appliances & Repair", "Video/Film Production", "Architects", "Tree Services", "Food Stands", "Hiking", "Lawyers", "Skiing", "Tennis", "Massage", "Chiropractors", "Landscaping", "Go Karts", "Auto Parts & Supplies", "Casinos", "Dentists", "Climbing", "Animal Shelters", "Gun/Rifle Ranges", "Solar Installation", "Auto Repair", "Polish", "Musicians", "Carpeting"]
+    #   # not_cuisines.uniq!
 
-      cuisines = cuisines
-      main_cuisine = cuisines.first
-    end
+    #   cuisines = cuisines
+    #   main_cuisine = cuisines.first
+    # end
 
     cuisines = nil if cuisines.empty?
     
     if json['address']["addressCountry"] == page['vars']['country']
-      location = {
-        # _collection: "locations_#{page['vars']['country'].downcase}",
-        _collection: 'locations',
-        _id: id_dedup,
-        date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
-        lead_id: uuid,
-        url: page['url'],
-        restaurant_name: CGI.unescapeHTML(name), 
-
-        price_category: price_category,
-        restaurant_address: street_1.empty? ? nil : street_1,
-        # restaurant_address1: street_1,
-        # restaurant_address2: street_2,
-        restaurant_city: city.empty? ? nil : city,
-        restaurant_area: state.nil? || state.empty? ? nil : state,
-        restaurant_post_code: zip.nil? ? nil : zip,
-        restaurant_country: country,
-        restaurant_lat: (Float(lat) rescue nil),
-        restaurant_long: (Float(long) rescue nil),
-        phone_number: (phone&.empty? ? nil : phone),
-        restaurant_delivers: delivery,
-        # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
-        restaurant_rating: (rating ? rating.to_f : nil),
-        restaurant_position: nil,
-        number_of_ratings: reviews_count,
-        main_cuisine: main_cuisine,
-        cuisine_name: cuisines&.uniq,
-        opening_hours: (hours&.empty? ? nil : hours),
-        restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
-        restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
-        free_field: {
-          # website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
-          website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
+      if main_cuisine.nil?
+        location = {
+          _collection: 'non-related',
+          _id: id_dedup,
+          date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
+          lead_id: uuid,
+          url: page['url'],
+          restaurant_name: CGI.unescapeHTML(name), 
+  
+          price_category: price_category,
+          restaurant_address: street_1.empty? ? nil : street_1,
+          restaurant_city: city.empty? ? nil : city,
+          restaurant_area: state.nil? || state.empty? ? nil : state,
+          restaurant_post_code: zip.nil? ? nil : zip,
+          restaurant_country: country,
+          restaurant_lat: (Float(lat) rescue nil),
+          restaurant_long: (Float(long) rescue nil),
+          phone_number: (phone&.empty? ? nil : phone),
+          restaurant_delivers: delivery,
+          # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
+          restaurant_rating: (rating ? rating.to_f : nil),
+          restaurant_position: nil,
+          number_of_ratings: reviews_count,
+          main_cuisine: main_cuisine,
+          cuisine_name: cuisines&.uniq,
+          opening_hours: (hours&.empty? ? nil : hours),
+          restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
+          restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
+          free_field: {
+            website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
+          }
         }
-      }
-      outputs << location
-      save_outputs outputs if outputs.length > 99
+        outputs << location
+        save_outputs outputs if outputs.length > 99
+      else
+        location = {
+          # _collection: "locations_#{page['vars']['country'].downcase}",
+          _collection: 'locations',
+          _id: id_dedup,
+          date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
+          lead_id: uuid,
+          url: page['url'],
+          restaurant_name: CGI.unescapeHTML(name), 
 
-      pages << {
-        url: page['url'].gsub(/\/$/, '') + "/props",
-        page_type: 'props',
-        fetch_type: "standard",
-        priority: 500,
-        headers: {
-          'accept': 'application/json',
-          'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
-          'cache-control': 'no-cache',
-          'content-type': 'application/json',
-          'pragma': 'no-cache',
-          'referer': page['url'],
-          'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
-          'sec-ch-ua-mobile': '?0',
-          'sec-ch-ua-platform': '"Windows"',
-          'sec-fetch-dest': 'empty',
-          'sec-fetch-mode': 'cors',
-          'sec-fetch-site': 'same-origin',
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.50',
-          'x-requested-with': 'XMLHttpRequest'
-        },
-        http2: true,
-        vars: page['vars'].merge({
-          "parent_gid" => page['gid'],
-          # "location" => location
-        }),
-      } 
-      save_pages pages if pages.count > 99
+          price_category: price_category,
+          restaurant_address: street_1.empty? ? nil : street_1,
+          # restaurant_address1: street_1,
+          # restaurant_address2: street_2,
+          restaurant_city: city.empty? ? nil : city,
+          restaurant_area: state.nil? || state.empty? ? nil : state,
+          restaurant_post_code: zip.nil? ? nil : zip,
+          restaurant_country: country,
+          restaurant_lat: (Float(lat) rescue nil),
+          restaurant_long: (Float(long) rescue nil),
+          phone_number: (phone&.empty? ? nil : phone),
+          restaurant_delivers: delivery,
+          # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
+          restaurant_rating: (rating ? rating.to_f : nil),
+          restaurant_position: nil,
+          number_of_ratings: reviews_count,
+          main_cuisine: main_cuisine,
+          cuisine_name: cuisines&.uniq,
+          opening_hours: (hours&.empty? ? nil : hours),
+          restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
+          restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
+          free_field: {
+            # website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
+            website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
+          }
+        }
+        outputs << location
+        save_outputs outputs if outputs.length > 99
+
+        # pages << {
+        #   url: page['url'].gsub(/\/$/, '') + "/props",
+        #   page_type: 'props',
+        #   fetch_type: "standard",
+        #   priority: 500,
+        #   headers: {
+        #     'accept': 'application/json',
+        #     'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+        #     'cache-control': 'no-cache',
+        #     'content-type': 'application/json',
+        #     'pragma': 'no-cache',
+        #     'referer': page['url'],
+        #     'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
+        #     'sec-ch-ua-mobile': '?0',
+        #     'sec-ch-ua-platform': '"Windows"',
+        #     'sec-fetch-dest': 'empty',
+        #     'sec-fetch-mode': 'cors',
+        #     'sec-fetch-site': 'same-origin',
+        #     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.50',
+        #     'x-requested-with': 'XMLHttpRequest'
+        #   },
+        #   http2: true,
+        #   vars: page['vars'].merge({
+        #     "parent_gid" => page['gid'],
+        #     # "location" => location
+        #   }),
+        # } 
+        # save_pages pages if pages.count > 99
+      end
     end
-
-    # html.search('section:contains("People Also Viewed") a[href]').map{|a| a['href']}.each do |related|
-    #   pages << {
-    #     url: "https://www.yelp.com#{related}",
-    #     page_type: 'restaurant',
-    #     fetch_type: "browser",
-    #     headers: {
-    #       "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-    #       "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
-    #     },
-    #     http2: true,
-    #     vars: {
-    #       country: page['vars']['country'],
-    #       position: (0)
-    #     }
-    #   }
-    # end
-
-    
-
-    # end
   end
 end

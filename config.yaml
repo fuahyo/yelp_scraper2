@@ -28,6 +28,10 @@ exporters:
     exporter_type: json
     collection: locations
     write_mode: line
+  - exporter_name: non_related_json_line
+    exporter_type: json
+    collection: non-related
+    write_mode: line
   - exporter_name: locations_cl_csv
     exporter_type: csv
     collection: locations
