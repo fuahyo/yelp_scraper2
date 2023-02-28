@@ -302,7 +302,6 @@ else
         save_outputs outputs if outputs.length > 99
       else
         location = {
-          # _collection: "locations_#{page['vars']['country'].downcase}",
           _collection: 'locations',
           _id: id_dedup,
           date: Time.parse(page['fetched_at']).strftime('%Y%m%d %H:%M:%S'),
@@ -312,8 +311,6 @@ else
 
           price_category: price_category,
           restaurant_address: street_1.empty? ? nil : street_1,
-          # restaurant_address1: street_1,
-          # restaurant_address2: street_2,
           restaurant_city: city.empty? ? nil : city,
           restaurant_area: state.nil? || state.empty? ? nil : state,
           restaurant_post_code: zip.nil? ? nil : zip,
@@ -322,7 +319,6 @@ else
           restaurant_long: (Float(long) rescue nil),
           phone_number: (phone&.empty? ? nil : phone),
           restaurant_delivers: delivery,
-          # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
           restaurant_rating: (rating ? rating.to_f : nil),
           restaurant_position: nil,
           number_of_ratings: reviews_count,
@@ -330,9 +326,8 @@ else
           cuisine_name: cuisines&.uniq,
           opening_hours: (hours&.empty? ? nil : hours),
           restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
-          restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
+          restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "#{ENV['currency_code']}"}] : nil,
           free_field: {
-            # website: (html.at('div:has(p:contains("Business website")) a').text.strip rescue nil)
             website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
           }
         }
