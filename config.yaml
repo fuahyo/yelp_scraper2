@@ -1,6 +1,6 @@
 parse_failed_pages: false
 input_vars:
- - name: country_code
+ - name: currency_code
 seeder:
   file: ./seeder/seeder.rb
 parsers:

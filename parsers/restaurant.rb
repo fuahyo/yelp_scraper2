@@ -293,7 +293,7 @@ else
           cuisine_name: cuisines&.uniq,
           opening_hours: (hours&.empty? ? nil : hours),
           restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
-          restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "SEK"}] : nil,
+          restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "#{ENV['currency_code']}"}] : nil,
           free_field: {
             website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
           }
