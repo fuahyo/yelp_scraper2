@@ -25,7 +25,7 @@ while true
     #     location['main_cuisine'] = main_cuisine
     #   end
     # end
-    location['restaurant_post_code'] = nil if location['restaurant_post_code'].nil? || location['restaurant_post_code'].empty?
+    # location['restaurant_post_code'] = nil if location['restaurant_post_code'].nil? || location['restaurant_post_code'].empty?
     
     unless location['restaurant_post_code'].nil?
       post_code = location['restaurant_post_code'].to_f
