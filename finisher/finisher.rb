@@ -22,10 +22,6 @@ while true
       end
     end
 
-    if location['main_cuisine'] == "Restaurants"
-      cuisines["cuisine1"] = "Restaurant"
-    end
-
     location['restaurant_post_code'] = nil if location['restaurant_post_code'].nil? || location['restaurant_post_code'].empty?
     location['cuisine_name'] = cuisines
 
