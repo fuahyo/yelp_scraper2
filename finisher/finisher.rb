@@ -33,7 +33,12 @@ while true
     # end
     # location['cuisine_name'] = cuisines
 
-    location['free_field'] = nil if location['free_field']['website'].nil?
+    if location['free_field']['website'].nil?
+      require 'byebug'
+      byebug
+      location['free_field'] = nil
+    end
+    byebug
     outputs << location
 
     save_outputs(outputs) if outputs.count > 99
