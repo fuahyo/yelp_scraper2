@@ -39,8 +39,10 @@ while true
       end
     end
 
-    location['restaurant_post_code'] = nil if location['restaurant_post_code'].empty?
-    
+    unless location['restaurant_post_code'].nil?
+      location['restaurant_post_code'] = nil if location['restaurant_post_code'].empty?
+    end
+
     outputs << location
 
     save_outputs(outputs) if outputs.count > 99
