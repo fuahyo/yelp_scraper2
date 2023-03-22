@@ -174,7 +174,7 @@ else
 
       main_cuisine = json['servesCuisine']
     end
-
+    
     cuisines = html.search('span.category-str-list a').map{|cat| cat.text.strip.gsub(/\\u([a-f0-9]{4,5})/i){ [$1.hex].pack('U') }}.uniq rescue []
 
     if cuisines.nil? || cuisines.count == 0
