@@ -33,10 +33,9 @@ while true
     # end
     # location['cuisine_name'] = cuisines
 
-    if location['free_field']['website'].nil?
+    if location['free_field']['website'].nil? || location['free_field'].empty?
       location['free_field'] = nil
     end
-
     outputs << location
 
     save_outputs(outputs) if outputs.count > 99
