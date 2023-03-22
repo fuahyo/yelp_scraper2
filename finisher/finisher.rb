@@ -33,8 +33,10 @@ while true
     # end
     # location['cuisine_name'] = cuisines
 
-    if location['free_field']['website'].nil? || location['free_field'].empty?
-      location['free_field'] = nil
+    unless location['free_field'].nil?
+      if location['free_field']['website'].nil? || location['free_field'].empty?
+        location['free_field'] = nil
+      end
     end
     outputs << location
 
