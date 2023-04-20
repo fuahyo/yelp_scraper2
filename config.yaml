@@ -103,7 +103,7 @@ exporters:
     no_subfolder: true
     no_tar: true
     offset: 
-    start_on_job_done: false
+    start_on_job_done: true
     write_mode: line
   - export_filename: "<name>_A2Restaurants_<d:yyyyMMdd>"
     collection: locations
@@ -143,5 +143,5 @@ exporters:
     no_subfolder: true
     no_tar: true
     offset: 
-    start_on_job_done: false
+    start_on_job_done: true
     write_mode: line
