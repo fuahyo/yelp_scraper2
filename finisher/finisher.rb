@@ -21,7 +21,7 @@ while true
     end 
     
     unless location['restaurant_post_code'].nil?
-      location['restaurant_post_code'] = nil if location['restaurant_post_code'].empty?
+      # location['restaurant_post_code'] = nil if location['restaurant_post_code'].empty?
       post_code = location['restaurant_post_code'].to_f
       location['restaurant_post_code'] = post_code
     end
@@ -31,6 +31,8 @@ while true
         location['free_field'] = nil
       end
     end
+
+    location['restaurant_post_code'] = nil if location['restaurant_post_code'] == 0
     outputs << location
 
     save_outputs(outputs) if outputs.count > 99
