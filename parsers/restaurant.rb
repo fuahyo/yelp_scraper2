@@ -173,9 +173,9 @@ else
       price_category = json['priceRange']
 
       main_cuisine = json['servesCuisine']
-      require 'byebug'
+      # require 'byebug'
     end
-    byebug
+    # byebug
 
     cuisines = html.search('span.category-str-list a').map{|cat| cat.text.strip.gsub(/\\u([a-f0-9]{4,5})/i){ [$1.hex].pack('U') }}.uniq rescue []
 
