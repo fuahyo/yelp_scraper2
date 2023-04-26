@@ -20,11 +20,11 @@ while true
       location['restaurant_delivery_zones'].first['currency'] = ENV['currency_code']
     end 
     
-    # unless location['restaurant_post_code'].nil?
-    #   location['restaurant_post_code'] = nil if location['restaurant_post_code'].empty?
+    unless location['restaurant_post_code'].nil?
+      location['restaurant_post_code'] = nil if location['restaurant_post_code'].empty?
     #   post_code = location['restaurant_post_code'].gsub(/[A-Za-z]/,"").gsub(' ','').to_f
     #   location['restaurant_post_code'] = post_code
-    # end
+    end
 
     unless location['free_field'].nil?
       if location['free_field']['website'].nil? || location['free_field'].empty?
