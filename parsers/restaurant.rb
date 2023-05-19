@@ -138,6 +138,7 @@ else
   #     refetch page['gid']
   #     parsable = false
   #   end
+
   unless json['address']["addressCountry"].nil?
     if json['address']["addressCountry"] != page['vars']['country']
       parsable = false
@@ -354,7 +355,7 @@ else
             'sec-fetch-dest': 'empty',
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.50',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
             'x-requested-with': 'XMLHttpRequest'
           },
           http2: true,
