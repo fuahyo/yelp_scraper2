@@ -338,7 +338,7 @@ else
         save_outputs outputs if outputs.length > 99
 
         pages << {
-          url: page['url'].gsub(/\/$/, '') + "?page_src=related_bizes",
+          url: page['url'].gsub(/\/$/, '') + "/props",
           page_type: 'props',
           fetch_type: "standard",
           priority: 500,
