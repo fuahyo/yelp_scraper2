@@ -7,20 +7,11 @@ code = "
 "
 parsable = true
 
-# 
-
-# html = Nokogiri::HTML(content)
 json = JSON.parse(content)
-
-# parsable = !html.at('div.no-results')
-# parsable = !html.at('p.lemon--p__373c0__3Qnnj.text__373c0__2pB8f.text-color--normal__373c0__K_MKN:contains("Suggestions for improving the results")')
-# parsable = !html.at('p.css-znumc2:contains("Suggestions for improving the results")')
 
 if parsable
 
   total_results = json['searchPageProps']['mainContentComponentsListProps'].find{|x| x['type'] == "pagination" }['props']['totalResults'] rescue 0
-
-  # raise 'todo' if total_results > 0
 
   if total_results > 10 && page['vars']['initial']
     # pagination
@@ -59,7 +50,10 @@ if parsable
       page_type: 'restaurant',
       fetch_type: "standard",
       headers: {
-        "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+        "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        "Accept-Encoding" => "gzip, deflate, br",
+        "Accept-Language" => "en-US,en;q=0.9",
+        "Cache-Control" => "max-age=0",
         "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
       },
       http2: true,

@@ -25,8 +25,6 @@ if false
   #   raise 'refetch failed'
   # end
 else
-  # require 'byebug'
-  # byebug
   def uuid_v3(uuid_namespace, name)
     version = 3
 
@@ -125,7 +123,17 @@ else
 
   html = Nokogiri::HTML(content)
   json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
+
+  if json.nil?
+    html.css('script[type="application/ld+json"]').each do |js|
+      body = JSON.parse(js.text)
+      json = body if body['@type'] == "Restaurant" rescue nil
+    end
+  end
+
+  # require 'byebug'
   # byebug
+
   # begin
   #   unless html.at('span.page-status:contains("404 error")').nil?
   #     parsable = false
@@ -364,7 +372,7 @@ else
             # "location" => location
           }),
         } 
-        save_pages pages if pages.count > 99
+        # save_pages pages if pages.count > 99
       end
     end
   end
