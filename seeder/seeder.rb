@@ -124,7 +124,7 @@ pages << {
   },
   http2: true,
   vars: {
-    country: code,
+    country: 'CZ',
     initial: true
   }
 }
