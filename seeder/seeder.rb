@@ -112,7 +112,7 @@ pages << {
     'cache-control': 'no-cache',
     'content-type': 'application/json',
     'pragma': 'no-cache',
-    'referer': referer,
+    'referer': 'https://www.yelp.com/search/snippet?cflt=restaurants&l=g%3A18.0%2C50.7%2C17.0%2C49.7',
     'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
