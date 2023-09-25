@@ -10,12 +10,15 @@ while true
   records = find_outputs("locations", query, 1, per_page)
 
   records.each do |location|
-    cuisines = {}
-    location['cuisine_name'].each_with_index do |cuisine, index|
-        cuisines["cuisine#{index + 1}"] = cuisine
-    end rescue {}
-    location['cuisine_name'] = cuisines
-
+    # cuisines = {}
+    # location['cuisine_name'].each_with_index do |cuisine, index|
+    #     cuisines["cuisine#{index + 1}"] = cuisine
+    # end rescue {}
+    # location['cuisine_name'] = cuisines
+    if location['main_cuisine'].include?','
+      location['main_cuisine'] = location['main_cuisine'].split(',').first
+  
+    end
     unless location['restaurant_delivery_zones'].nil?
       location['restaurant_delivery_zones'].first['currency'] = ENV['currency_code']
     end 

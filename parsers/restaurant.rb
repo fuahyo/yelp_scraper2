@@ -278,7 +278,22 @@ else
     # end
 
     cuisines = nil if cuisines.empty?
+    cuisines_formated = {}
+    cuisines&.uniq.each_with_index do |cuisine, index|
+      cuisines_formated["cuisine#{index + 1}"] = cuisine
+    end rescue {}
     # require 'byebug';byebug
+
+    zip = nil if zip.empty?
+    zip ||= nil if zip.nil?
+    zip ||= nil if zip == 0
+
+    free_field = nil
+    website = html.search('div:has(p:contains("Business website"))').last.text.gsub('Business website', "http://www.") rescue nil
+    if !website.nil? || !website.empty? 
+      free_field = {website: website}
+    end
+
     if json['address']["addressCountry"] == page['vars']['country']
       if main_cuisine.nil?
         location = {
@@ -293,7 +308,7 @@ else
           restaurant_address: street_1.empty? ? nil : street_1,
           restaurant_city: city.empty? ? nil : city,
           restaurant_area: state.nil? || state.empty? ? nil : state,
-          restaurant_post_code: zip.nil? ? nil : zip,
+          restaurant_post_code: zip,
           restaurant_country: country,
           restaurant_lat: (Float(lat) rescue nil),
           restaurant_long: (Float(long) rescue nil),
@@ -308,10 +323,7 @@ else
           opening_hours: (hours&.empty? ? nil : hours),
           restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
           restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "#{ENV['currency_code']}"}] : nil,
-          free_field: {
-            # website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
-            website: (html.search('div:has(p:contains("Business website"))').last.text.gsub('Business website', "http://www.") rescue nil)
-          }
+          free_field: free_field rescue nil
         }
         outputs << location
         save_outputs outputs if outputs.length > 99
@@ -328,7 +340,7 @@ else
           restaurant_address: street_1.empty? ? nil : street_1,
           restaurant_city: city.empty? ? nil : city,
           restaurant_area: state.nil? || state.empty? ? nil : state,
-          restaurant_post_code: zip.nil? ? nil : zip,
+          restaurant_post_code: zip, #zip.nil? ? nil : zip,
           restaurant_country: country,
           restaurant_lat: (Float(lat) rescue nil),
           restaurant_long: (Float(long) rescue nil),
@@ -338,46 +350,43 @@ else
           restaurant_position: nil,
           number_of_ratings: reviews_count,
           main_cuisine: main_cuisine,
-          cuisine_name: cuisines&.uniq,
+          cuisine_name: cuisines_formated,
           opening_hours: (hours&.empty? ? nil : hours),
           restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
           restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "#{ENV['currency_code']}"}] : nil,
-          free_field: {
-            # website: (html.search('div:has(p:contains("Business website"))').last.text[/http.+/] rescue nil)
-            website: (html.search('div:has(p:contains("Business website"))').last.text.gsub('Business website', "http://www.") rescue nil)
-          }
+          free_field: free_field rescue nil
         }
         outputs << location
         save_outputs outputs if outputs.length > 99
 
-        # pages << {
-        #   url: page['url'].gsub(/\/$/, '') + "/props",
-        #   page_type: 'props',
-        #   fetch_type: "standard",
-        #   priority: 500,
-        #   headers: {
-        #     'accept': 'application/json',
-        #     'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
-        #     'cache-control': 'no-cache',
-        #     'content-type': 'application/json',
-        #     'pragma': 'no-cache',
-        #     'referer': page['url'],
-        #     'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
-        #     'sec-ch-ua-mobile': '?0',
-        #     'sec-ch-ua-platform': '"Windows"',
-        #     'sec-fetch-dest': 'empty',
-        #     'sec-fetch-mode': 'cors',
-        #     'sec-fetch-site': 'same-origin',
-        #     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
-        #     'x-requested-with': 'XMLHttpRequest'
-        #   },
-        #   http2: true,
-        #   vars: page['vars'].merge({
-        #     "parent_gid" => page['gid'],
-        #     # "location" => location
-        #   }),
-        # } 
-        # save_pages pages if pages.count > 99
+        pages << {
+          url: page['url'].gsub(/\/$/, '') + "/props",
+          page_type: 'props',
+          fetch_type: "standard",
+          priority: 500,
+          headers: {
+            'accept': 'application/json',
+            'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+            'pragma': 'no-cache',
+            'referer': page['url'],
+            'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            'x-requested-with': 'XMLHttpRequest'
+          },
+          http2: true,
+          vars: page['vars'].merge({
+            "parent_gid" => page['gid'],
+            # "location" => location
+          }),
+        } 
+        save_pages pages if pages.count > 99
       end
     end
   end
