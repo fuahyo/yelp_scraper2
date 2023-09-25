@@ -290,7 +290,7 @@ else
 
     free_field = nil
     website = html.search('div:has(p:contains("Business website"))').last.text.gsub('Business website', "http://www.") rescue nil
-    if !website.nil? || !website.empty? 
+    if !website.nil?
       free_field = {website: website}
     end
 
@@ -323,7 +323,7 @@ else
           opening_hours: (hours&.empty? ? nil : hours),
           restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
           restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "#{ENV['currency_code']}"}] : nil,
-          free_field: free_field rescue nil
+          free_field: free_field
         }
         outputs << location
         save_outputs outputs if outputs.length > 99
@@ -354,7 +354,7 @@ else
           opening_hours: (hours&.empty? ? nil : hours),
           restaurant_tags: (tags&.empty? ? nil : tags.map{|t| CGI.unescapeHTML(t)}),
           restaurant_delivery_zones: delivery ? [{"delivery_zone": nil,"minimum_order_value": nil,"delivery_fee": nil,"currency": "#{ENV['currency_code']}"}] : nil,
-          free_field: free_field rescue nil
+          free_field: free_field
         }
         outputs << location
         save_outputs outputs if outputs.length > 99
