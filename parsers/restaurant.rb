@@ -286,8 +286,8 @@ else
     end rescue {}
     # require 'byebug';byebug
 
-    zip = nil if zip.empty?
-    zip ||= nil if zip.nil?
+    # zip = nil if zip.empty?
+    zip = nil if zip.nil?
     zip ||= nil if zip == 0
 
     free_field = nil
