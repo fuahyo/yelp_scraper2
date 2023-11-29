@@ -4,26 +4,6 @@ code = "
 parsable = true
 
 if false
-  # refetch_count = (page['vars']['refetch_count'].nil?)? 1 : page['vars']['refetch_count'] + 1
-  # if refetch_count < 2
-  #   pages << {
-  #     url: page['url'],
-  #     page_type: 'restaurant',
-  #     fetch_type: "browser",
-  #     driver: {
-  #       name: "refetch",
-  #       enable_images: true,
-  #     },
-  #     http2: true,
-  #     vars: {
-  #       country: page['vars']['country'],
-  #       position: page['vars']['position'],
-  #       refetch_count: refetch_count
-  #     }
-  #   }
-  # else
-  #   raise 'refetch failed'
-  # end
 else
   def uuid_v3(uuid_namespace, name)
     version = 3
@@ -39,87 +19,6 @@ else
     "%08x-%04x-%04x-%04x-%04x%08x" % ary
   end
   
-  # unwanted_cuisines = [
-  #   "Hair Salons","Gyms","Printing Services","Hotels","Massage","Cards & Stationery",
-  #   "Yoga","Men's Clothing","Art Galleries","Bookstores","Nail Salons","Museums","Performing Arts",
-  #   "Furniture Stores","Sports Wear","Hair Stylists","Hair Removal","Lounges","Art Supplies",
-  #   "Cosmetics & Beauty Supply","Opera & Ballet","Estheticians","Women's Clothing","Music Venues",
-  #   "Men's Hair Salons","Office Equipment","Arts & Crafts","Stadiums & Arenas","Leather Goods",
-  #   "Interior Design","Landmarks & Historical Buildings","Social Clubs","Toy Stores","Trainers",
-  #   "Accessories","Mattresses","Swimming Pools","Sports Clubs","Tattoo","Used, Vintage & Consignment",
-  #   "Arts & Entertainment","Makeup Artists","Active Life","Golf","Bike Repair/Maintenance","Boxing",
-  #   "Airport Lounges","Fabric Stores","Cultural Center","Betting Centers","Swimming Lessons/Schools",
-  #   "Day Spas","Venues & Event Spaces","Art Museums","Martial Arts","Building Supplies","Car Wash",
-  #   "Wholesale Stores","Architectural Tours","Waxing","Furniture Repair","Mass Media",
-  #   "Fitness & Instruction","Amateur Sports Teams","Department Stores","Books, Mags, Music & Video",
-  #   "Sporting Goods","Claimed","Building Supplies", "Laundry Services", "Windows Installation"
-  # ]
-  # not_cuisines = ["Hair Salons","Gyms","Printing Services","Hotels","Massage","Cards & Stationery",
-  #   "Yoga","Men's Clothing","Art Galleries","Bookstores","Nail Salons","Museums","Performing Arts",
-  #   "Furniture Stores","Sports Wear","Hair Stylists","Hair Removal","Lounges","Art Supplies",
-  #   "Cosmetics & Beauty Supply","Opera & Ballet","Estheticians","Women's Clothing","Music Venues",
-  #   "Men's Hair Salons","Office Equipment","Arts & Crafts","Stadiums & Arenas","Leather Goods",
-  #   "Interior Design","Landmarks & Historical Buildings","Social Clubs","Toy Stores","Trainers",
-  #   "Accessories","Mattresses","Swimming Pools","Sports Clubs","Tattoo","Used, Vintage & Consignment",
-  #   "Arts & Entertainment","Makeup Artists","Active Life","Golf","Bike Repair/Maintenance","Boxing",
-  #   "Airport Lounges","Fabric Stores","Cultural Center","Betting Centers","Swimming Lessons/Schools",
-  #   "Day Spas","Venues & Event Spaces","Art Museums","Martial Arts","Building Supplies","Car Wash",
-  #   "Wholesale Stores","Architectural Tours","Waxing","Furniture Repair","Mass Media","Fitness & Instruction",
-  #   "Amateur Sports Teams","Department Stores","Books, Mags, Music & Video","Sporting Goods","Claimed",
-  #   "Music & DVDs","Food Stands", "Kiosk","Bistros","Beaches","Grocery","Vegan","Buffets",
-  #   "Bars","Local Flavor","Gluten-Free","Wine Bars","Medical Spas","Farmers Market","Sushi Bars","Recreation Centers",
-  #   "Pubs","Used Bookstore","Comfort Food","Parks","Dog Parks","Coffee Roasteries","Cinema","Tex-Mex", 
-  #   "Post Offices","Community Service/Non-Profit","Pan Asian","Tea Rooms","Shoe Repair","Tapas/Small Plates",
-  #   "Gay Bars","Public Transportation","Home Decor","Electronics","Asian Fusion","Public Services & Government",
-  #   "Cafeteria","Candy Stores","Lakes","Antiques","Skin Care","Chocolatiers & Shops","Festivals","Skate Parks",
-  #   "Shopping","Caterers","Delis","Street Vendors","Organic Stores","Local Services","Skating Rinks",
-  #   "Dance Clubs","Bowling","Dive Bars","Bed & Breakfast","Beer Bar","Jewelry","Karaoke",
-  #   "Souvenir Shops","Speakeasies","Hiking","Traditional Chinese Medicine","Education",
-  #   "Health & Medical","Flea Markets","Hobby Shops","Barbers","Outlet Stores","Boating",
-  #   "Framing","Youth Club","Ski Resorts","Chicken Shop","Amusement Parks","Creperies","Sports Bars","Hotel bar",
-  #   "Train Stations","Cheese Shops","Comedy Clubs","Luggage","Pets","Knitting Supplies","Boat Charters",
-  #   "Hotels & Travel","Mobile Phones","Canteen","Irish Pub","Jazz & Blues","Discount Store","Shoe Stores",
-  #   "Airports","Outdoor Gear","Nightlife","Professional Services","Fashion","Specialty Food","Mountain Biking",
-  #   "Scandinavian Design","Food Trucks","Playgrounds","Physical Therapy","Religious Organizations","Fruits & Veggies",
-  #   "Beer, Wine & Spirits","Cafes","Diners","Eyelash Service","Convenience Stores","Shopping Centers","Bike Rentals",
-  #   "Buddhist Temples","Western Style Japanese Food","International","Bartending Schools","Hot Pot","Herbs & Spices",
-  #   "Rest Stops","Botanical Gardens","Climbing","Historical Tours","Zoos","Castles","Tapas Bars","Local Fish Stores",
-  #   "Chiropractors","Gyudon","Bagels","Sake Bars","Kids Activities","Whiskey Bars","Hookah Bars","Gift Shops","Food",
-  #   "Food Court","Meat Shops","Halal","Turkish","Acupuncture","Themed Cafes","Indoor Playcentre","Nurseries & Gardening",
-  #   "Barbeque","Arcades","Libraries","Guest Houses","Adult","Guitar Stores","Massage Therapy","Bathing Area",
-  #   "Laser Hair Removal","Butcher","British","Mediterranean","Eyewear & Opticians","Laotian","Drugstores","Onigiri",
-  #   "Florists","Pancakes","Hungarian","Recycling Center","Cooking Classes","Tofu Shops","Appliances","Adult Entertainment",
-  #   "Pet Stores","Seafood Markets","Bikes","Police Departments","Security Services","Party Supplies","Computers",
-  #   "Watches","Specialty Schools","Thrift Stores","Wineries","Party & Event Planning","Aquariums","Tobacco Shops",
-  #   "Eyebrow Services","Pool & Billiards","Dance Wear","Basketball Courts","Observatories","Home & Garden",
-  #   "Live/Raw Food","Tours","Tennis","Beauty & Spas","Strip Clubs","Permanent Makeup","Pet Groomers","Pakistani",
-  #   "Pasta Shops","Metro Stations","Baby Gear & Furniture","Pharmacy","Hostels","Personal Shopping","Soccer",
-  #   "Video Game Stores","Child Care & Day Care","Duty-Free Shops","Resorts","Race Tracks","Counseling & Mental Health",
-  #   "Clothing Rental","Pet Sitting","Pet Services","Colleges & Universities","Imported Food","Champagne Bars",
-  #   "Travel Services","Videos & Video Game Rental","Photography Stores & Services","Departments of Motor Vehicles",
-  #   "Beer Gardens","Health Markets","Campgrounds","Food Delivery Services","Funeral Services & Cemeteries",
-  #   "Session Photography","Dagashi","Skate Shops","Gas Stations","Bento","Public Art","Horseback Riding","Lingerie",
-  #   "Perfume", "Coffee & Tea Supplies","Comic Books","Children's Clothing","Filipino","Magicians","Shared Office Spaces",
-  #   "Hospitals","Greek","Do-It-Yourself Food","Transportation","Hardware Stores","Bulgarian","Software Development",
-  #   "Pool Halls","Visitor Centers","Popcorn Shops","Educational Services","Steakhouses","American (Traditional)",
-  #   "Newspapers & Magazines","Desserts","Island Pub","Game Meat","Brasseries","Dance Studios","Mini Golf","Pilates",
-  #   "Open Sandwiches","Churches","Fondue","Lighting Fixtures & Equipment","Banks & Credit Unions","Kitchen & Bath",
-  #   "Baguettes","Latin American","African","Internet Cafes","Bridal","Polish","Flowers & Gifts","Insurance","Cuban",
-  #   "Basque","Optometrists","Preschools","Hair Extensions","Medical Centers","Signature Cuisine","Pop-Up Restaurants",
-  #   "Boot Camps","Russian","Financial Services","Couriers & Delivery Services","Marketing","Australian","Bangladeshi",
-  #   "Swimwear","Experiences","Furniture Reupholstery","Musical Instruments & Teachers","Airport Shuttles","Lawn Bowling",
-  #   "Weight Loss Centers","Fitness/Exercise Equipment","Car Rental","Poke","Bubble Tea","Kurdish","Tanning","Cantonese",
-  #   "Dance Schools","Public Markets","Rafting/Kayaking","Gelato","Paintball","Vinyl Records","IT Services & Computer Repair",
-  #   "Fast Food","Pensions","Bakeries","Brewpubs","Vacation Rentals","Beer Garden","Dinner Theater","Serbo Croatian",
-  #   "Pawn Shops","Accountants","Apartments","Mountain Huts","Shipping Centers","Home Health Care","Watch Repair",
-  #   "Piercing","Soup","Professional Sports Teams","Community Centers","Public Plazas","German","Falafel", "Building Supplies", "Laundry Services", "Windows Installation"
-  # ]
-
-  # if page['failed_response_status_code']
-  #   raise '503'
-  #   refetch page['gid']
-  #   parsable = false
-  # end
 
   html = Nokogiri::HTML(content)
   json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
@@ -131,22 +30,6 @@ else
     end
   end
 
-  # require 'byebug'
-  # byebug
-
-  # begin
-  #   unless html.at('span.page-status:contains("404 error")').nil?
-  #     parsable = false
-  #   end
-  #   if html.at('h1').nil?
-  #     refetch page['gid']
-  #     parsable = false
-  #   end
-  #   if json['address'].nil?
-  #     refetch page['gid']
-  #     parsable = false
-  #   end
-
   unless json['address']["addressCountry"].nil?
     if json['address']["addressCountry"] != page['vars']['country']
       parsable = false
@@ -154,16 +37,6 @@ else
   end
   
   uid = html.at('meta[name="yelp-biz-id"]')['content'] rescue nil
-
-  #   if uid.nil?
-  #     refetch page['gid']
-  #     parsable = false
-  #   end
-  # rescue => e
-  #   puts e.message
-  #   raise
-  #   parsable = false
-  # end
 
   if parsable
     if !json.nil?
@@ -173,6 +46,11 @@ else
       city = json['address']['addressLocality']
       state = json['address']['addressRegion']
       zip = json['address']['postalCode'].gsub('〒', '') rescue nil
+      unless zip.nil?
+        if zip.empty?
+          zip = nil
+        end
+      end 
       country = json['address']['addressCountry']
       phone = json['telephone']
 
@@ -198,21 +76,6 @@ else
     end
     cuisines.shift if cuisines.first == 'Unclaimed'
     
-    # main_cuisine = ([main_cuisine] + cuisines).compact.first
-
-    # cuisines = []
-    # html.search('script[type="application/ld+json"]').each do |js|
-    #   cs_json = JSON.parse(js)
-    #   if cs_json.include? "itemListElement"
-    #     cuisines << cs_json['itemListElement'][1]['item']['name'].gsub("amp;", '') rescue nil
-    #   end
-    # end
-    
-    # cuisines = ([main_cuisine] + cuisines).compact - not_cuisines rescue []
-    
-    # if cuisines.empty?
-    #   main_cuisine = main_cuisine_origin
-    # end
     
     if rating.nil?
       rating = html.at('div.photoHeader__373c0__1lZx8 div.i-stars__373c0___sZu0')['aria-label'][/([\d\.]+) star/, 1].to_f rescue nil
@@ -268,16 +131,14 @@ else
     uuid = uuid_v3("yelp_#{page['vars']['country'].downcase}", uid)
     id_dedup = "#{CGI.unescapeHTML(name)}_#{street_1}_#{city}"
 
-    tags = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
+    tags_raw = html.to_html.scan(/0\.properties\.\d+.+?displayText&quot;:&quot;(.+?)&quot;/).flatten
+    tags = []
+    tags_raw.each do |tag|
+      if !tags.include? tag
+        tags.append(tag)
+      end
+    end
     delivery = tags.include?('Offers Delivery')
-
-    # if !cuisines.nil? && !cuisines&.empty?
-    #   # not_cuisines = ["Home & Garden", "Arcades", "Dance Clubs", "Caterers", "Fuel Docks", "Stadiums & Arenas", "Pop-Up Restaurants", "Landmarks & Historical Buildings", "Fashion", "Parks", "Flowers & Gifts", "Convenience Stores", "Fishing", "Bars", "Grocery", "Mini Golf", "Pool Halls", "Vacation Rental Agents", "Eyewear & Opticians", "Food Delivery Services", "Baby Gear & Furniture", "Transportation", "Organic Stores", "Recreation Centers", "Sporting Goods", "Flea Markets", "Bike Repair/Maintenance", "Food Court", "Electronics", "Shopping Centers", "Adult", "Hostels", "Hair Salons", "Books, Mags, Music & Video", "Internet Cafes", "Day Spas", "Jazz & Blues", "Ethical Grocery", "Irish", "Bridal", "Bathing Area", "Golf", "Bistros", "Fitness & Instruction", "Horseback Riding", "Beaches", "Post Offices", "Optometrists", "Bike Rentals", "Antiques", "Community Service/Non-Profit", "Preschools", "Kids Activities", "Hospitals", "Train Stations", "Mountain Biking", "Counseling & Mental Health", "Tobacco Shops", "Nail Salons", "Boat Charters", "Castles", "Hobby Shops", "Lakes", "Tours", "Boating", "Knitting Supplies", "Rafting/Kayaking", "Guest Houses", "Skin Care", "Accountants", "Marketing", "Bowling", "Child Care & Day Care", "Karaoke", "Steakhouses", "Libraries", "Public Art", "Festivals", "Scandinavian", "Playgrounds", "Jewelry", "Souvenir Shops", "Interior Design", "Skating Rinks", "Aquariums", "Pet Services", "Physical Therapy", "Thrift Stores", "Discount Store", "Lawn Bowling", "Weight Loss Centers", "Fitness/Exercise Equipment", "Outlet Stores", "Car Rental", "Pet Stores", "Indoor Playcentre", "Soccer", "Couriers & Delivery Services", "Community Centers", "Distilleries", "Colleges & Universities", "Insurance", "Farmers Market", "Specialty Schools", "Public Markets", "Signature Cuisine", "Resorts", "Acupuncture", "Musical Instruments & Teachers", "Art Classes", "Comedy Clubs", "Pharmacy", "Lighting Fixtures & Equipment", "IT Services & Computer Repair", "Ice Cream & Frozen Yogurt", "Party Supplies", "Wholesale Stores", "Toy Stores", "Cosmetics & Beauty Supply", "Department Stores", "Kiosk", "Cards & Stationery", "Botanical Gardens", "Delicatessen", "Car Wash", "Traditional Chinese Medicine", "Watches", "Venues & Event Spaces", "Computers", "Amusement Parks", "Mobile Phones", "Tickets", "Hotels", "Medical Foot Care", "Food Trucks", "Zoos", "Experiences", "Sewing & Alterations", "Real Estate", "Music Venues", "Luggage", "Performing Arts", "Youth Club", "Party & Event Planning", "Butcher", "Sports Clubs", "Cultural Center", "Arts & Crafts", "Wedding Planning", "Museums", "Nutritionists", "Laser Tag", "Head Shops", "Gas Stations", "Photography Stores & Services", "Modern European", "Watch Repair", "Educational Services", "Cinema", "Ski Resorts", "Street Vendors", "Chinese", "Art Galleries", "International Grocery", "Electronics Repair", "Furniture Reupholstery", "Betting Centers", "Doctors", "Surfing", "Personal Shopping", "Swimming Pools", "Graphic Design", "Social Clubs", "Adult Education", "Contractors", "Electricians", "Plumbing", "Painters", "Roofing", "General Contractors", "Private Schools", "Campgrounds", "Cafes", "Vacation Rentals", "Saunas", "Travel Services", "Smokehouse", "Advertising", "Home Cleaning", "Car Dealers", "Web Design", "Spiritual Shop", "Heating & Air Conditioning/HVAC", "Farms", "Tires", "Churches", "Elementary Schools", "Employment Agencies", "Flooring", "Public Relations", "Photographers", "Island Pub", "Print Media", "Appliances & Repair", "Video/Film Production", "Architects", "Tree Services", "Food Stands", "Hiking", "Lawyers", "Skiing", "Tennis", "Massage", "Chiropractors", "Landscaping", "Go Karts", "Auto Parts & Supplies", "Casinos", "Dentists", "Climbing", "Animal Shelters", "Gun/Rifle Ranges", "Solar Installation", "Auto Repair", "Polish", "Musicians", "Carpeting"]
-    #   # not_cuisines.uniq!
-
-    #   cuisines = cuisines
-    #   main_cuisine = cuisines.first
-    # end
 
     cuisines = nil if cuisines.empty?
     cuisines_formated = {}
@@ -317,7 +178,7 @@ else
           phone_number: (phone&.empty? ? nil : phone),
           restaurant_delivers: delivery,
           # restaurant_overall_rating: (html.at('span.overallRating').text.strip rescue nil),
-          restaurant_rating: (rating ? rating.to_f : nil),
+          restaurant_rating: (rating ? rating.to_i : nil),
           restaurant_position: nil,
           number_of_ratings: reviews_count,
           main_cuisine: main_cuisine,
@@ -348,7 +209,7 @@ else
           restaurant_long: (Float(long) rescue nil),
           phone_number: (phone&.empty? ? nil : phone),
           restaurant_delivers: delivery,
-          restaurant_rating: (rating ? rating.to_f : nil),
+          restaurant_rating: (rating ? rating.to_i : nil),
           restaurant_position: nil,
           number_of_ratings: reviews_count,
           main_cuisine: main_cuisine,
@@ -361,34 +222,34 @@ else
         outputs << location
         save_outputs outputs if outputs.length > 99
 
-        pages << {
-          url: page['url'].gsub(/\/$/, '') + "/props",
-          page_type: 'props',
-          fetch_type: "standard",
-          priority: 500,
-          headers: {
-            'accept': 'application/json',
-            'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
-            'cache-control': 'no-cache',
-            'content-type': 'application/json',
-            'pragma': 'no-cache',
-            'referer': page['url'],
-            'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-origin',
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
-            'x-requested-with': 'XMLHttpRequest'
-          },
-          http2: true,
-          vars: page['vars'].merge({
-            "parent_gid" => page['gid'],
-            # "location" => location
-          }),
-        } 
-        save_pages pages if pages.count > 99
+        # pages << {
+        #   url: page['url'].gsub(/\/$/, '') + "/props",
+        #   page_type: 'props',
+        #   fetch_type: "standard",
+        #   priority: 500,
+        #   headers: {
+        #     'accept': 'application/json',
+        #     'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+        #     'cache-control': 'no-cache',
+        #     'content-type': 'application/json',
+        #     'pragma': 'no-cache',
+        #     'referer': page['url'],
+        #     'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
+        #     'sec-ch-ua-mobile': '?0',
+        #     'sec-ch-ua-platform': '"Windows"',
+        #     'sec-fetch-dest': 'empty',
+        #     'sec-fetch-mode': 'cors',
+        #     'sec-fetch-site': 'same-origin',
+        #     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+        #     'x-requested-with': 'XMLHttpRequest'
+        #   },
+        #   http2: true,
+        #   vars: page['vars'].merge({
+        #     "parent_gid" => page['gid'],
+        #     # "location" => location
+        #   }),
+        # } 
+        # save_pages pages if pages.count > 99
       end
     end
   end
