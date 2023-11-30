@@ -19,7 +19,7 @@ parsers:
     # disabled: true
 finisher:
   file: ./finisher/finisher.rb
-  disabled: true
+  disabled: false
 exporters:
   - exporter_name: locations_json
     exporter_type: json
