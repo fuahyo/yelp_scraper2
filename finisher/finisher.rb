@@ -37,7 +37,8 @@ while true
     #   end
     # end
     # location['restaurant_rating'] = location['restaurant_rating'].to_f
-    location['restaurant_rating'] = nil if location['restaurant_rating'] == 0 
+    location['restaurant_rating'] = nil if location['restaurant_rating'] == 0
+    location['number_of_ratings'] = location['number_of_ratings'].to_f
     location['number_of_ratings'] = nil if location['number_of_ratings'] == 0
 
     outputs << location
