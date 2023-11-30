@@ -15,25 +15,25 @@ while true
     #     cuisines["cuisine#{index + 1}"] = cuisine
     # end rescue {}
     # location['cuisine_name'] = cuisines
-    if location['main_cuisine'].include?','
-      location['main_cuisine'] = location['main_cuisine'].split(',').first
+    # if location['main_cuisine'].include?','
+    #   location['main_cuisine'] = location['main_cuisine'].split(',').first
   
-    end
-    unless location['restaurant_delivery_zones'].nil?
-      location['restaurant_delivery_zones'].first['currency'] = ENV['currency_code']
-    end 
+    # end
+    # unless location['restaurant_delivery_zones'].nil?
+    #   location['restaurant_delivery_zones'].first['currency'] = ENV['currency_code']
+    # end 
     
-    unless location['restaurant_post_code'].nil?
-      location['restaurant_post_code'] = nil if location['restaurant_post_code'].empty?
-    end
+    # unless location['restaurant_post_code'].nil?
+    #   location['restaurant_post_code'] = nil if location['restaurant_post_code'].empty?
+    # end
 
-    unless location['free_field'].nil?
-      if location['free_field']['website'].nil? || location['free_field'].empty?
-        location['free_field'] = nil
-      end
-    end
-
-    location['restaurant_post_code'] = nil if location['restaurant_post_code'] == 0
+    # unless location['free_field'].nil?
+    #   if location['free_field']['website'].nil? || location['free_field'].empty?
+    #     location['free_field'] = nil
+    #   end
+    # end
+    location['number_of_ratings'] = location['number_of_ratings'].to_f
+    location['restaurant_post_code'] = nil if location['restaurant_post_code'] == ""
     outputs << location
 
     save_outputs(outputs) if outputs.count > 99
