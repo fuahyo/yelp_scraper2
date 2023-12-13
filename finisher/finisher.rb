@@ -19,10 +19,11 @@ while true
       end
       location['restaurant_tags'] = tag
     end
-    # if location['main_cuisine'].include?','
-    #   location['main_cuisine'] = location['main_cuisine'].split(',').first
+    
+    if location['main_cuisine'].include?'&amp;'
+      location['main_cuisine'] = location['main_cuisine'].gsub('&amp;','')
   
-    # end
+    end
     # unless location['restaurant_delivery_zones'].nil?
     #   location['restaurant_delivery_zones'].first['currency'] = ENV['currency_code']
     # end 
@@ -38,7 +39,6 @@ while true
     # end
     # location['restaurant_rating'] = location['restaurant_rating'].to_f
     location['restaurant_rating'] = nil if location['restaurant_rating'] == 0
-    location['number_of_ratings'] = location['number_of_ratings'].to_f
     location['number_of_ratings'] = nil if location['number_of_ratings'] == 0
 
     outputs << location

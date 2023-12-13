@@ -211,7 +211,7 @@ else
           restaurant_delivers: delivery,
           restaurant_rating: (rating ? rating.to_i : nil),
           restaurant_position: nil,
-          number_of_ratings: reviews_count,
+          number_of_ratings: reviews_count.to_f,
           main_cuisine: main_cuisine,
           cuisine_name: cuisines_formated,
           opening_hours: (hours&.empty? ? nil : hours),
