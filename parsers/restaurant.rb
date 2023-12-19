@@ -209,7 +209,7 @@ else
           restaurant_long: (Float(long) rescue nil),
           phone_number: (phone&.empty? ? nil : phone),
           restaurant_delivers: delivery,
-          restaurant_rating: (rating ? rating.to_i : nil),
+          restaurant_rating: (rating ? rating.to_f : nil),
           restaurant_position: nil,
           number_of_ratings: reviews_count.to_f,
           main_cuisine: main_cuisine,
