@@ -1,5 +1,5 @@
 code = "
-  await sleep(3000);
+  await sleep(10000);
 "
 parsable = true
 
@@ -222,34 +222,34 @@ else
         outputs << location
         save_outputs outputs if outputs.length > 99
 
-        # pages << {
-        #   url: page['url'].gsub(/\/$/, '') + "/props",
-        #   page_type: 'props',
-        #   fetch_type: "standard",
-        #   priority: 500,
-        #   headers: {
-        #     'accept': 'application/json',
-        #     'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
-        #     'cache-control': 'no-cache',
-        #     'content-type': 'application/json',
-        #     'pragma': 'no-cache',
-        #     'referer': page['url'],
-        #     'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
-        #     'sec-ch-ua-mobile': '?0',
-        #     'sec-ch-ua-platform': '"Windows"',
-        #     'sec-fetch-dest': 'empty',
-        #     'sec-fetch-mode': 'cors',
-        #     'sec-fetch-site': 'same-origin',
-        #     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
-        #     'x-requested-with': 'XMLHttpRequest'
-        #   },
-        #   http2: true,
-        #   vars: page['vars'].merge({
-        #     "parent_gid" => page['gid'],
-        #     # "location" => location
-        #   }),
-        # } 
-        # save_pages pages if pages.count > 99
+        pages << {
+          url: page['url'].gsub(/\/$/, '') + "/props",
+          page_type: 'props',
+          fetch_type: "standard",
+          priority: 500,
+          headers: {
+            'accept': 'application/json',
+            'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+            'pragma': 'no-cache',
+            'referer': page['url'],
+            'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Microsoft Edge";v="110"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            'x-requested-with': 'XMLHttpRequest'
+          },
+          http2: true,
+          vars: page['vars'].merge({
+            "parent_gid" => page['gid'],
+            # "location" => location
+          }),
+        } 
+        save_pages pages if pages.count > 99
       end
     end
   end
