@@ -37,6 +37,7 @@ else
   end
   
   uid = html.at('meta[name="yelp-biz-id"]')['content'] rescue nil
+  uid = html.css('.y-css-tqu69c .y-css-lbeyaq a').attr('href').text.split('account?').first.split('/').last if uid.nil?
 
   if parsable
     if !json.nil?
