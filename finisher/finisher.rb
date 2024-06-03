@@ -20,9 +20,13 @@ while true
       location['restaurant_tags'] = tag
     end
     
-    if location['main_cuisine'].include?'&amp;'
-      location['main_cuisine'] = location['main_cuisine'].gsub('&amp;','')
-  
+    # if location['main_cuisine'].nil?
+    #   require 'byebug'; byebug
+    # end
+    unless location['main_cuisine'].nil?
+      if location['main_cuisine'].include?'&amp;'
+        location['main_cuisine'] = location['main_cuisine'].gsub('&amp;','')
+      end
     end
     # unless location['restaurant_delivery_zones'].nil?
     #   location['restaurant_delivery_zones'].first['currency'] = ENV['currency_code']
