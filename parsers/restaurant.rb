@@ -32,7 +32,7 @@ else
     end
   end
   
-  if json['@type'] == 'ItemList' || json.empty?
+  if json['@type'] != 'Restaurant' || json.empty?
     name = html.css('.y-css-olzveb').text
     price_category = nil
     street_1 = html.css('p.y-css-r4s27p .raw__09f24__T4Ezm').text
