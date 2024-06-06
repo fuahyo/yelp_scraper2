@@ -60,6 +60,11 @@ else
       price_category = json['priceRange']
 
       main_cuisine = json['servesCuisine']
+
+      if main_cuisine.is_a?(Array)
+        main_cuisine = main_cuisine.first
+      end
+
       unless main_cuisine.nil?
         if main_cuisine.include?','
           main_cuisine = main_cuisine.split(',').first
