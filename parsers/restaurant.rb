@@ -19,7 +19,6 @@ else
     "%08x-%04x-%04x-%04x-%04x%08x" % ary
   end
   
-
   html = Nokogiri::HTML(content)
   json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
 
@@ -30,14 +29,24 @@ else
     end
   end
 
+  if !json['address']
+    search_script = html.css("script").find{|s| s.text =~ /ItemList/}
+    json = JSON.parse(search_script)['itemListElement'][0]['contentLocation'] rescue nil
+  end
+
   unless json['address']["addressCountry"].nil?
     if json['address']["addressCountry"] != page['vars']['country']
+      outputs << {
+        _collection: "another_country_restaurant",
+        country: json['address']["addressCountry"],
+        url: page['url']
+      }
       parsable = false
     end
   end
-  
   uid = html.at('meta[name="yelp-biz-id"]')['content'] rescue nil
 
+  
   if parsable
     if !json.nil?
       name = json['name']
