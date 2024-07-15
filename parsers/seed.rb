@@ -50,7 +50,7 @@ if parsable
       page_type: 'restaurant',
       fetch_type: "standard",
       headers: {
-        "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        "User-Agent" => "Google-Extended",
         "Accept-Encoding" => "gzip, deflate, br",
         "Accept-Language" => "en-US,en;q=0.9",
         "Cache-Control" => "max-age=0",
