@@ -107,7 +107,8 @@ else
     end
 
     lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
-    lat, long = html.at('section:contains("Location") img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil?
+    lat, long = html.at('section:contains("Location") img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil? || lat.empty?
+    lat, long = html.at('section[aria-label="Location & Hours"] img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil? || lat.empty?
 
     hours_sel = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)')
     hours = hours_sel.inject({}) do |a,b|
@@ -182,7 +183,8 @@ else
           restaurant_name: CGI.unescapeHTML(name), 
   
           price_category: price_category,
-          restaurant_address: street_1.empty? ? nil : street_1,
+          # restaurant_address: street_1.empty? ? nil : street_1,
+          restaurant_address: street_1.nil? ? nil : (street_1.empty? ? nil : street_1),
           restaurant_city: city.empty? ? nil : city,
           restaurant_area: state.nil? || state.empty? ? nil : state,
           restaurant_post_code: zip,
@@ -214,7 +216,8 @@ else
           restaurant_name: CGI.unescapeHTML(name), 
 
           price_category: price_category,
-          restaurant_address: street_1.empty? ? nil : street_1,
+          # restaurant_address: street_1.empty? ? nil : street_1,
+          restaurant_address: street_1.nil? ? nil : (street_1.empty? ? nil : street_1),
           restaurant_city: city.empty? ? nil : city,
           restaurant_area: state.nil? || state.empty? ? nil : state,
           restaurant_post_code: zip, #zip.nil? ? nil : zip,
