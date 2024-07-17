@@ -2,6 +2,7 @@ code = "
   await sleep(3000);
 "
 parsable = true
+newName = false
 
 if false
 else
@@ -21,6 +22,7 @@ else
   
   html = Nokogiri::HTML(content)
   json = html.search('script[type="application/ld+json"]').inject({}){|a,b| a.merge JSON.parse(b)} rescue nil
+  json2 = json
 
   if json.nil?
     html.css('script[type="application/ld+json"]').each do |js|
@@ -32,13 +34,49 @@ else
   if !json['address']
     search_script = html.css("script").find{|s| s.text =~ /ItemList/}
     json = JSON.parse(search_script)['itemListElement'][0]['contentLocation'] rescue nil
+
+    if json.nil?  
+      json3 = {}
+      jsonHtmlSearch = html.search('script[type="application/json"]')
+      jsonHtmlSearch.each do |script|
+        content = script.content
+        content.gsub!(/<!--(.*?)-->/m, '\1')
+        content.gsub!("&quot;", '"')
+        begin
+          parsed_content = JSON.parse(content)
+          if parsed_content.is_a?(Hash)
+            json3.merge!(parsed_content)
+          else
+            puts "Skipping non-hash JSON content"
+          end
+        rescue JSON::ParserError => e
+          puts "Skipping invalid JSON: #{e.message}"
+        end
+      end
+      # json = json2
+      json = json2.merge(json3['legacyProps']['bizDetailsProps'])
+      target_key_location = json3.keys.find { |key| key.match(/\$ROOT_QUERY\.business\({\"encid\":\".*\"}\)\.location\.address/) }
+      target_key_telephone = json3.keys.find { |key| key.match(/\$ROOT_QUERY\.business\({\"encid\":\".*\"}\)\.phoneNumber/) }
+      target_key_rating = json3.keys.find { |key| key.match(/\$ROOT_QUERY\.business\({\"encid\":\".*\"}\)/) }
+      target_key_alias = json3.keys.find { |key| key.match(/\$ROOT_QUERY\.business\({\"encid\":\".*\"}\)\.categories\.0/) }
+      json = json.merge("location" => json3[target_key_location])
+      json = json.merge("telephone" =>json3[target_key_telephone]['formatted'])
+      json = json.merge("rating" =>json3[target_key_rating]['rating'])
+      json = json.merge("reviewCount" =>json3[target_key_rating]['reviewCount'])
+      json = json.merge("priceRange" =>json3[target_key_rating]['priceRange'])
+      json = json.merge("servesCuisine" =>json3[target_key_alias]['title'])
+
+      newName = true
+    end 
   end
 
-  unless json['address']["addressCountry"].nil?
-    if json['address']["addressCountry"] != page['vars']['country']
+  addressCountry = json['address']['addressCountry'] rescue nil
+  addressCountry = json['gaDimensions']['global']['content_country'][1] if addressCountry.nil? || addressCountry.empty?
+  unless addressCountry.nil?  
+    if addressCountry != page['vars']['country']
       outputs << {
         _collection: "another_country_restaurant",
-        country: json['address']["addressCountry"],
+        country: addressCountry,
         url: page['url']
       }
       parsable = false
@@ -50,24 +88,36 @@ else
   if parsable
     if !json.nil?
       name = json['name']
+      name = json['bizDetailsPageProps']['businessName'] if newName
 
       street_1 = json['address']['streetAddress'].gsub(/\s+/, ' ') rescue nil
-      city = json['address']['addressLocality']
-      state = json['address']['addressRegion']
+      street_1 = json['location']['addressLine1'] if street_1.nil?
+      
+      city = json['address']['addressLocality'] rescue nil
+      city = json['location']['city'] if city.nil?
+      
+      state = json['address']['addressRegion'] rescue nil
+      state = json['location']["regionCode"] if state.nil?
+      
       zip = json['address']['postalCode'].gsub('〒', '') rescue nil
+      zip = json['location']['postalCode'].gsub('〒', '') if zip.nil?
+      
       unless zip.nil?
         if zip.empty?
           zip = nil
         end
       end 
-      country = json['address']['addressCountry']
-      phone = json['telephone']
-
-      rating = json['aggregateRating']['ratingValue'] rescue nil
-      reviews_count = json['aggregateRating']['reviewCount'] rescue 0
-
+      country = json['address']['addressCountry'] rescue nil
+      country = json['location']["formatted"].split("\n")[2].strip if country.nil? && json['location']
+      
+      phone = json['telephone'] rescue nil
+      
+      rating = json.dig('aggregateRating', 'ratingValue') || json['rating'] rescue nil
+      
+      reviews_count = json.dig('aggregateRating', 'reviewCount') || json['reviewCount'] || 0
+        
       price_category = json['priceRange']
-
+      
       main_cuisine = json['servesCuisine']
 
       if main_cuisine.is_a?(Array)
@@ -107,7 +157,7 @@ else
     end
 
     lat, long = html.at('a.biz-map-directions img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil]
-    lat, long = html.at('section:contains("Location") img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil? || lat.empty?
+    lat, long = html.at('section:contains("Location") img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil?
     lat, long = html.at('section[aria-label="Location & Hours"] img[alt="Map"]')['src'].scan(/center=([\-\.\d]+)%2C([\-\.\d]+)&/).first rescue [nil, nil] if lat.nil? || lat.empty?
 
     hours_sel = html.search('table.table--simple__373c0__3QsR_.hours-table__373c0__2YHlD tr:has(th)')
@@ -172,7 +222,7 @@ else
       free_field = {website: website}
     end
 
-    if json['address']["addressCountry"] == page['vars']['country']
+    if addressCountry == page['vars']['country']
       if main_cuisine.nil?
         location = {
           _collection: 'non-related',
